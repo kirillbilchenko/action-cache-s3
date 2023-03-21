@@ -51,13 +51,13 @@ async function saveCache() {
         await listTar(archivePath, compressionMethod);
       }
 
-      const object = path.join(key, cacheFileName);
+      const object = path.join(core.getInput("bucket_sub_folder"),key, cacheFileName);
 
       core.info(`Uploading tar to s3. Bucket: ${bucket}, Object: ${object}`);
       await mc.fPutObject(bucket, object, archivePath, {});
       core.info("Cache saved to s3 successfully");
     } catch (e) {
-      core.info("Save s3 cache failed: " + e.message);
+      core.info("Save s3 cache failed: " + (e as Error).message);
       if (useFallback) {
         if (isGhes()) {
           core.warning("Cache fallback is not supported on Github Enterpise.");
@@ -71,7 +71,7 @@ async function saveCache() {
       }
     }
   } catch (e) {
-    core.info("warning: " + e.message);
+    core.info("warning: " + (e as Error).message);
   }
 }
 

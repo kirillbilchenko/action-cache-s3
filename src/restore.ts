@@ -4,6 +4,7 @@ import { extractTar, listTar } from "@actions/cache/lib/internal/tar";
 import * as core from "@actions/core";
 import * as path from "path";
 import { State } from "./state";
+import * as minio from "minio";
 import {
   findObject,
   formatSize,
@@ -40,12 +41,22 @@ async function restoreCache() {
         await utils.createTempDirectory(),
         cacheFileName
       );
+      let efectiveKey = path.join(core.getInput("bucket_sub_folder"), key)
+      let effectiveRestoreKey=restoreKeys.map((element) => {
+        return path.join(core.getInput("bucket_sub_folder"),element);
+      });
+
+      core.info("Cache path in the bucket: "+ efectiveKey);
+
+      effectiveRestoreKey.forEach((element) => {
+        core.info("Restore key:" +element);
+      });
 
       const { item: obj, matchingKey } = await findObject(
         mc,
         bucket,
-        key,
-        restoreKeys,
+        efectiveKey,
+        effectiveRestoreKey,
         compressionMethod
       );
       core.debug("found cache object");
@@ -53,7 +64,8 @@ async function restoreCache() {
       core.info(
         `Downloading cache from s3 to ${archivePath}. bucket: ${bucket}, object: ${obj.name}`
       );
-      await mc.fGetObject(bucket, obj.name, archivePath);
+
+      await downloadWithRetry(mc, bucket, obj.name, archivePath)
 
       if (core.isDebug()) {
         await listTar(archivePath, compressionMethod);
@@ -62,10 +74,10 @@ async function restoreCache() {
       core.info(`Cache Size: ${formatSize(obj.size)} (${obj.size} bytes)`);
 
       await extractTar(archivePath, compressionMethod);
-      setCacheHitOutput(matchingKey === key);
+      setCacheHitOutput(matchingKey === efectiveKey);
       core.info("Cache restored from s3 successfully");
     } catch (e) {
-      core.info("Restore s3 cache failed: " + e.message);
+      core.info("Restore s3 cache failed: " + (e as Error).message);
       setCacheHitOutput(false);
       if (useFallback) {
         if (isGhes()) {
@@ -87,8 +99,42 @@ async function restoreCache() {
       }
     }
   } catch (e) {
-    core.setFailed(e.message);
+    core.setFailed((e as Error).message);
   }
+}
+
+async function downloadWithRetry(
+  mc: minio.Client,
+  bucketName: string,
+  objectName: string,
+  archivePath: string
+): Promise<void> {
+  var retryCount = 3;
+  var interval = 5000;
+  for (let i = 0; i <= 3; i++) {
+    try {
+      await mc.fGetObject(bucketName, objectName, archivePath);
+      core.info(`Downloaded object "${objectName}" successfully.`);
+      return;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        core.warning(
+          `Failed to download object "${objectName}". Error: ${
+            err.message
+          }. Retrying in ${interval / 1000} seconds...`
+        );
+      } else {
+        core.warning(
+          `Failed to download object "${objectName}". Error: ${err}. Retrying in ${
+            interval / 1000
+          } seconds...`
+        );
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+  }
+  core.error(`Download failed after ${retryCount} attempts. For object ${objectName}`);
 }
 
 restoreCache();
