@@ -6,6 +6,29 @@
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,14 +38,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.saveCache = exports.restoreCache = exports.isFeatureAvailable = exports.ReserveCacheError = exports.ValidationError = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(1017));
 const utils = __importStar(__nccwpck_require__(1518));
@@ -111,11 +128,11 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
             // Download the cache from the cache entry
             yield cacheHttpClient.downloadCache(cacheEntry.archiveLocation, archivePath, options);
             if (core.isDebug()) {
-                yield tar_1.listTar(archivePath, compressionMethod);
+                yield (0, tar_1.listTar)(archivePath, compressionMethod);
             }
             const archiveFileSize = utils.getArchiveFileSizeInBytes(archivePath);
             core.info(`Cache Size: ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B)`);
-            yield tar_1.extractTar(archivePath, compressionMethod);
+            yield (0, tar_1.extractTar)(archivePath, compressionMethod);
             core.info('Cache restored successfully');
             return cacheEntry.cacheKey;
         }
@@ -168,9 +185,9 @@ function saveCache(paths, key, options, enableCrossOsArchive = false) {
         const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
         core.debug(`Archive Path: ${archivePath}`);
         try {
-            yield tar_1.createTar(archiveFolder, cachePaths, compressionMethod);
+            yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
             if (core.isDebug()) {
-                yield tar_1.listTar(archivePath, compressionMethod);
+                yield (0, tar_1.listTar)(archivePath, compressionMethod);
             }
             const fileSizeLimit = 10 * 1024 * 1024 * 1024; // 10GB per repo limit
             const archiveFileSize = utils.getArchiveFileSizeInBytes(archivePath);
@@ -231,6 +248,29 @@ exports.saveCache = saveCache;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -240,14 +280,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.saveCache = exports.reserveCache = exports.downloadCache = exports.getCacheEntry = exports.getCacheVersion = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const http_client_1 = __nccwpck_require__(6255);
 const auth_1 = __nccwpck_require__(5526);
@@ -308,7 +342,7 @@ function getCacheEntry(keys, paths, options) {
         const httpClient = createHttpClient();
         const version = getCacheVersion(paths, options === null || options === void 0 ? void 0 : options.compressionMethod, options === null || options === void 0 ? void 0 : options.enableCrossOsArchive);
         const resource = `cache?keys=${encodeURIComponent(keys.join(','))}&version=${version}`;
-        const response = yield requestUtils_1.retryTypedResponse('getCacheEntry', () => __awaiter(this, void 0, void 0, function* () { return httpClient.getJson(getCacheApiUrl(resource)); }));
+        const response = yield (0, requestUtils_1.retryTypedResponse)('getCacheEntry', () => __awaiter(this, void 0, void 0, function* () { return httpClient.getJson(getCacheApiUrl(resource)); }));
         // Cache not found
         if (response.statusCode === 204) {
             // List cache for primary key only if cache miss occurs
@@ -317,7 +351,7 @@ function getCacheEntry(keys, paths, options) {
             }
             return null;
         }
-        if (!requestUtils_1.isSuccessStatusCode(response.statusCode)) {
+        if (!(0, requestUtils_1.isSuccessStatusCode)(response.statusCode)) {
             throw new Error(`Cache service responded with ${response.statusCode}`);
         }
         const cacheResult = response.result;
@@ -336,7 +370,7 @@ exports.getCacheEntry = getCacheEntry;
 function printCachesListForDiagnostics(key, httpClient, version) {
     return __awaiter(this, void 0, void 0, function* () {
         const resource = `caches?key=${encodeURIComponent(key)}`;
-        const response = yield requestUtils_1.retryTypedResponse('listCache', () => __awaiter(this, void 0, void 0, function* () { return httpClient.getJson(getCacheApiUrl(resource)); }));
+        const response = yield (0, requestUtils_1.retryTypedResponse)('listCache', () => __awaiter(this, void 0, void 0, function* () { return httpClient.getJson(getCacheApiUrl(resource)); }));
         if (response.statusCode === 200) {
             const cacheListResult = response.result;
             const totalCount = cacheListResult === null || cacheListResult === void 0 ? void 0 : cacheListResult.totalCount;
@@ -352,15 +386,15 @@ function printCachesListForDiagnostics(key, httpClient, version) {
 function downloadCache(archiveLocation, archivePath, options) {
     return __awaiter(this, void 0, void 0, function* () {
         const archiveUrl = new url_1.URL(archiveLocation);
-        const downloadOptions = options_1.getDownloadOptions(options);
+        const downloadOptions = (0, options_1.getDownloadOptions)(options);
         if (downloadOptions.useAzureSdk &&
             archiveUrl.hostname.endsWith('.blob.core.windows.net')) {
             // Use Azure storage SDK to download caches hosted on Azure to improve speed and reliability.
-            yield downloadUtils_1.downloadCacheStorageSDK(archiveLocation, archivePath, downloadOptions);
+            yield (0, downloadUtils_1.downloadCacheStorageSDK)(archiveLocation, archivePath, downloadOptions);
         }
         else {
             // Otherwise, download using the Actions http-client.
-            yield downloadUtils_1.downloadCacheHttpClient(archiveLocation, archivePath);
+            yield (0, downloadUtils_1.downloadCacheHttpClient)(archiveLocation, archivePath);
         }
     });
 }
@@ -375,7 +409,7 @@ function reserveCache(key, paths, options) {
             version,
             cacheSize: options === null || options === void 0 ? void 0 : options.cacheSize
         };
-        const response = yield requestUtils_1.retryTypedResponse('reserveCache', () => __awaiter(this, void 0, void 0, function* () {
+        const response = yield (0, requestUtils_1.retryTypedResponse)('reserveCache', () => __awaiter(this, void 0, void 0, function* () {
             return httpClient.postJson(getCacheApiUrl('caches'), reserveCacheRequest);
         }));
         return response;
@@ -399,10 +433,10 @@ function uploadChunk(httpClient, resourceUrl, openStream, start, end) {
             'Content-Type': 'application/octet-stream',
             'Content-Range': getContentRange(start, end)
         };
-        const uploadChunkResponse = yield requestUtils_1.retryHttpClientResponse(`uploadChunk (start: ${start}, end: ${end})`, () => __awaiter(this, void 0, void 0, function* () {
+        const uploadChunkResponse = yield (0, requestUtils_1.retryHttpClientResponse)(`uploadChunk (start: ${start}, end: ${end})`, () => __awaiter(this, void 0, void 0, function* () {
             return httpClient.sendStream('PATCH', resourceUrl, openStream(), additionalHeaders);
         }));
-        if (!requestUtils_1.isSuccessStatusCode(uploadChunkResponse.message.statusCode)) {
+        if (!(0, requestUtils_1.isSuccessStatusCode)(uploadChunkResponse.message.statusCode)) {
             throw new Error(`Cache service responded with ${uploadChunkResponse.message.statusCode} during upload chunk.`);
         }
     });
@@ -413,7 +447,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
         const fileSize = utils.getArchiveFileSizeInBytes(archivePath);
         const resourceUrl = getCacheApiUrl(`caches/${cacheId.toString()}`);
         const fd = fs.openSync(archivePath, 'r');
-        const uploadOptions = options_1.getUploadOptions(options);
+        const uploadOptions = (0, options_1.getUploadOptions)(options);
         const concurrency = utils.assertDefined('uploadConcurrency', uploadOptions.uploadConcurrency);
         const maxChunkSize = utils.assertDefined('uploadChunkSize', uploadOptions.uploadChunkSize);
         const parallelUploads = [...new Array(concurrency).keys()];
@@ -448,7 +482,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 function commitCache(httpClient, cacheId, filesize) {
     return __awaiter(this, void 0, void 0, function* () {
         const commitCacheRequest = { size: filesize };
-        return yield requestUtils_1.retryTypedResponse('commitCache', () => __awaiter(this, void 0, void 0, function* () {
+        return yield (0, requestUtils_1.retryTypedResponse)('commitCache', () => __awaiter(this, void 0, void 0, function* () {
             return httpClient.postJson(getCacheApiUrl(`caches/${cacheId.toString()}`), commitCacheRequest);
         }));
     });
@@ -463,7 +497,7 @@ function saveCache(cacheId, archivePath, options) {
         const cacheSize = utils.getArchiveFileSizeInBytes(archivePath);
         core.info(`Cache Size: ~${Math.round(cacheSize / (1024 * 1024))} MB (${cacheSize} B)`);
         const commitCacheResponse = yield commitCache(httpClient, cacheId, cacheSize);
-        if (!requestUtils_1.isSuccessStatusCode(commitCacheResponse.statusCode)) {
+        if (!(0, requestUtils_1.isSuccessStatusCode)(commitCacheResponse.statusCode)) {
             throw new Error(`Cache service responded with ${commitCacheResponse.statusCode} during commit cache.`);
         }
         core.info('Cache saved successfully');
@@ -479,6 +513,29 @@ exports.saveCache = saveCache;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -495,14 +552,8 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isGhes = exports.assertDefined = exports.getGnuTarPathOnWindows = exports.getCacheFileName = exports.getCompressionMethod = exports.unlinkFile = exports.resolvePaths = exports.getArchiveFileSizeInBytes = exports.createTempDirectory = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const glob = __importStar(__nccwpck_require__(1597));
@@ -534,7 +585,7 @@ function createTempDirectory() {
             }
             tempDirectory = path.join(baseLocation, 'actions', 'temp');
         }
-        const dest = path.join(tempDirectory, uuid_1.v4());
+        const dest = path.join(tempDirectory, (0, uuid_1.v4)());
         yield io.mkdirP(dest);
         return dest;
     });
@@ -663,6 +714,7 @@ exports.isGhes = isGhes;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ManifestFilename = exports.TarFilename = exports.SystemTarPathOnWindows = exports.GnuTarPathOnWindows = exports.SocketTimeout = exports.DefaultRetryDelay = exports.DefaultRetryAttempts = exports.ArchiveToolType = exports.CompressionMethod = exports.CacheFilename = void 0;
 var CacheFilename;
 (function (CacheFilename) {
     CacheFilename["Gzip"] = "cache.tgz";
@@ -704,6 +756,29 @@ exports.ManifestFilename = 'manifest.txt';
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -713,14 +788,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.downloadCacheStorageSDK = exports.downloadCacheHttpClient = exports.DownloadProgress = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const http_client_1 = __nccwpck_require__(6255);
 const storage_blob_1 = __nccwpck_require__(4100);
@@ -855,7 +924,7 @@ function downloadCacheHttpClient(archiveLocation, archivePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const writeStream = fs.createWriteStream(archivePath);
         const httpClient = new http_client_1.HttpClient('actions/cache');
-        const downloadResponse = yield requestUtils_1.retryHttpClientResponse('downloadCache', () => __awaiter(this, void 0, void 0, function* () { return httpClient.get(archiveLocation); }));
+        const downloadResponse = yield (0, requestUtils_1.retryHttpClientResponse)('downloadCache', () => __awaiter(this, void 0, void 0, function* () { return httpClient.get(archiveLocation); }));
         // Abort download if no traffic received over the socket.
         downloadResponse.message.socket.setTimeout(constants_1.SocketTimeout, () => {
             downloadResponse.message.destroy();
@@ -910,7 +979,8 @@ function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
             // If the file exceeds the buffer maximum length (~1 GB on 32-bit systems and ~2 GB
             // on 64-bit systems), split the download into multiple segments
             // ~2 GB = 2147483647, beyond this, we start getting out of range error. So, capping it accordingly.
-            const maxSegmentSize = Math.min(2147483647, buffer.constants.MAX_LENGTH);
+            // Updated segment size to 128MB = 134217728 bytes, to complete a segment faster and fail fast
+            const maxSegmentSize = Math.min(134217728, buffer.constants.MAX_LENGTH);
             const downloadProgress = new DownloadProgress(contentLength);
             const fd = fs.openSync(archivePath, 'w');
             try {
@@ -962,6 +1032,29 @@ const promiseWithTimeout = (timeoutMs, promise) => __awaiter(void 0, void 0, voi
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -971,14 +1064,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.retryHttpClientResponse = exports.retryTypedResponse = exports.retry = exports.isRetryableStatusCode = exports.isServerErrorStatusCode = exports.isSuccessStatusCode = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const http_client_1 = __nccwpck_require__(6255);
 const constants_1 = __nccwpck_require__(8840);
@@ -1089,6 +1176,29 @@ exports.retryHttpClientResponse = retryHttpClientResponse;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1098,14 +1208,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createTar = exports.extractTar = exports.listTar = void 0;
 const exec_1 = __nccwpck_require__(1514);
 const io = __importStar(__nccwpck_require__(7436));
 const fs_1 = __nccwpck_require__(7147);
@@ -1124,7 +1228,7 @@ function getTarPath() {
                     // Use GNUtar as default on windows
                     return { path: gnuTar, type: constants_1.ArchiveToolType.GNU };
                 }
-                else if (fs_1.existsSync(systemTar)) {
+                else if ((0, fs_1.existsSync)(systemTar)) {
                     return { path: systemTar, type: constants_1.ArchiveToolType.BSD };
                 }
                 break;
@@ -1302,7 +1406,7 @@ function execCommands(commands, cwd) {
     return __awaiter(this, void 0, void 0, function* () {
         for (const command of commands) {
             try {
-                yield exec_1.exec(command, undefined, {
+                yield (0, exec_1.exec)(command, undefined, {
                     cwd,
                     env: Object.assign(Object.assign({}, process.env), { MSYS: 'winsymlinks:nativestrict' })
                 });
@@ -1336,7 +1440,7 @@ exports.extractTar = extractTar;
 function createTar(archiveFolder, sourceDirectories, compressionMethod) {
     return __awaiter(this, void 0, void 0, function* () {
         // Write source directories to manifest.txt to avoid command length limits
-        fs_1.writeFileSync(path.join(archiveFolder, constants_1.ManifestFilename), sourceDirectories.join('\n'));
+        (0, fs_1.writeFileSync)(path.join(archiveFolder, constants_1.ManifestFilename), sourceDirectories.join('\n'));
         const commands = yield getCommands(compressionMethod, 'create');
         yield execCommands(commands, archiveFolder);
     });
@@ -1351,14 +1455,31 @@ exports.createTar = createTar;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getDownloadOptions = exports.getUploadOptions = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 /**
  * Returns a copy of the upload options with defaults filled in.
@@ -1393,7 +1514,7 @@ function getDownloadOptions(copy) {
         useAzureSdk: true,
         downloadConcurrency: 8,
         timeoutInMs: 30000,
-        segmentTimeoutInMs: 3600000,
+        segmentTimeoutInMs: 600000,
         lookupOnly: false
     };
     if (copy) {
@@ -5256,11 +5377,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rename = exports.readlink = exports.readdir = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
-_a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
+_a = fs.promises
+// export const {open} = 'fs'
+, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
+// export const {open} = 'fs'
 exports.IS_WINDOWS = process.platform === 'win32';
+// See https://github.com/nodejs/node/blob/d0153aee367422d0858105abec186da4dff0a0c5/deps/uv/include/uv/win.h#L691
+exports.UV_FS_O_EXLOCK = 0x10000000;
+exports.READONLY = fs.constants.O_RDONLY;
 function exists(fsPath) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -5441,12 +5568,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.findInPath = exports.which = exports.mkdirP = exports.rmRF = exports.mv = exports.cp = void 0;
 const assert_1 = __nccwpck_require__(9491);
-const childProcess = __importStar(__nccwpck_require__(2081));
 const path = __importStar(__nccwpck_require__(1017));
-const util_1 = __nccwpck_require__(3837);
 const ioUtil = __importStar(__nccwpck_require__(1962));
-const exec = util_1.promisify(childProcess.exec);
-const execFile = util_1.promisify(childProcess.execFile);
 /**
  * Copies a file or folder.
  * Based off of shelljs - https://github.com/shelljs/shelljs/blob/9237f66c52e5daa40458f94f9565e18e8132f5a6/src/cp.js
@@ -5527,61 +5650,23 @@ exports.mv = mv;
 function rmRF(inputPath) {
     return __awaiter(this, void 0, void 0, function* () {
         if (ioUtil.IS_WINDOWS) {
-            // Node doesn't provide a delete operation, only an unlink function. This means that if the file is being used by another
-            // program (e.g. antivirus), it won't be deleted. To address this, we shell out the work to rd/del.
             // Check for invalid characters
             // https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
             if (/[*"<>|]/.test(inputPath)) {
                 throw new Error('File path must not contain `*`, `"`, `<`, `>` or `|` on Windows');
             }
-            try {
-                const cmdPath = ioUtil.getCmdPath();
-                if (yield ioUtil.isDirectory(inputPath, true)) {
-                    yield exec(`${cmdPath} /s /c "rd /s /q "%inputPath%""`, {
-                        env: { inputPath }
-                    });
-                }
-                else {
-                    yield exec(`${cmdPath} /s /c "del /f /a "%inputPath%""`, {
-                        env: { inputPath }
-                    });
-                }
-            }
-            catch (err) {
-                // if you try to delete a file that doesn't exist, desired result is achieved
-                // other errors are valid
-                if (err.code !== 'ENOENT')
-                    throw err;
-            }
-            // Shelling out fails to remove a symlink folder with missing source, this unlink catches that
-            try {
-                yield ioUtil.unlink(inputPath);
-            }
-            catch (err) {
-                // if you try to delete a file that doesn't exist, desired result is achieved
-                // other errors are valid
-                if (err.code !== 'ENOENT')
-                    throw err;
-            }
         }
-        else {
-            let isDir = false;
-            try {
-                isDir = yield ioUtil.isDirectory(inputPath);
-            }
-            catch (err) {
-                // if you try to delete a file that doesn't exist, desired result is achieved
-                // other errors are valid
-                if (err.code !== 'ENOENT')
-                    throw err;
-                return;
-            }
-            if (isDir) {
-                yield execFile(`rm`, [`-rf`, `${inputPath}`]);
-            }
-            else {
-                yield ioUtil.unlink(inputPath);
-            }
+        try {
+            // note if path does not exist, error is silent
+            yield ioUtil.rm(inputPath, {
+                force: true,
+                maxRetries: 3,
+                recursive: true,
+                retryDelay: 300
+            });
+        }
+        catch (err) {
+            throw new Error(`File was unable to be removed ${err}`);
         }
     });
 }
@@ -40504,7 +40589,7 @@ function registerGlobal(type, instance, diag, allowOverride = false) {
     }
     if (api.version !== version_1.VERSION) {
         // All registered APIs must be of the same version exactly
-        const err = new Error('@opentelemetry/api: All API registration versions must match');
+        const err = new Error(`@opentelemetry/api: Registration of version v${api.version} for ${type} does not match previously registered API v${version_1.VERSION}`);
         diag.error(err.stack || err.message);
         return false;
     }
@@ -42014,7 +42099,7 @@ var TraceFlags;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VERSION = void 0;
 // this is autogenerated file, see scripts/version-update.js
-exports.VERSION = '1.4.0';
+exports.VERSION = '1.4.1';
 //# sourceMappingURL=version.js.map
 
 /***/ }),
@@ -97286,14 +97371,14 @@ var objectKeys = Object.keys || function (obj) {
 /*</replacement>*/
 
 module.exports = Duplex;
-const Readable = __nccwpck_require__(1433);
-const Writable = __nccwpck_require__(6993);
+var Readable = __nccwpck_require__(1433);
+var Writable = __nccwpck_require__(6993);
 __nccwpck_require__(4124)(Duplex, Readable);
 {
   // Allow the keys array to be GC'ed.
-  const keys = objectKeys(Writable.prototype);
+  var keys = objectKeys(Writable.prototype);
   for (var v = 0; v < keys.length; v++) {
-    const method = keys[v];
+    var method = keys[v];
     if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
   }
 }
@@ -97316,7 +97401,7 @@ Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     return this._writableState.highWaterMark;
   }
 });
@@ -97334,7 +97419,7 @@ Object.defineProperty(Duplex.prototype, 'writableLength', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     return this._writableState.length;
   }
 });
@@ -97356,13 +97441,13 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     if (this._readableState === undefined || this._writableState === undefined) {
       return false;
     }
     return this._readableState.destroyed && this._writableState.destroyed;
   },
-  set(value) {
+  set: function set(value) {
     // we ignore the value if the stream
     // has not been initialized yet
     if (this._readableState === undefined || this._writableState === undefined) {
@@ -97410,7 +97495,7 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
 
 
 module.exports = PassThrough;
-const Transform = __nccwpck_require__(4415);
+var Transform = __nccwpck_require__(4415);
 __nccwpck_require__(4124)(PassThrough, Transform);
 function PassThrough(options) {
   if (!(this instanceof PassThrough)) return new PassThrough(options);
@@ -97458,7 +97543,7 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-const EE = (__nccwpck_require__(2361).EventEmitter);
+var EE = (__nccwpck_require__(2361).EventEmitter);
 var EElistenerCount = function EElistenerCount(emitter, type) {
   return emitter.listeners(type).length;
 };
@@ -97468,8 +97553,8 @@ var EElistenerCount = function EElistenerCount(emitter, type) {
 var Stream = __nccwpck_require__(2387);
 /*</replacement>*/
 
-const Buffer = (__nccwpck_require__(4300).Buffer);
-const OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
+var Buffer = (__nccwpck_require__(4300).Buffer);
+var OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
 }
@@ -97478,8 +97563,8 @@ function _isUint8Array(obj) {
 }
 
 /*<replacement>*/
-const debugUtil = __nccwpck_require__(3837);
-let debug;
+var debugUtil = __nccwpck_require__(3837);
+var debug;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
 } else {
@@ -97487,23 +97572,23 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-const BufferList = __nccwpck_require__(6522);
-const destroyImpl = __nccwpck_require__(7049);
-const _require = __nccwpck_require__(9948),
+var BufferList = __nccwpck_require__(6522);
+var destroyImpl = __nccwpck_require__(7049);
+var _require = __nccwpck_require__(9948),
   getHighWaterMark = _require.getHighWaterMark;
-const _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
+var _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
   ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
   ERR_STREAM_PUSH_AFTER_EOF = _require$codes.ERR_STREAM_PUSH_AFTER_EOF,
   ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
   ERR_STREAM_UNSHIFT_AFTER_END_EVENT = _require$codes.ERR_STREAM_UNSHIFT_AFTER_END_EVENT;
 
 // Lazy loaded to improve the startup performance.
-let StringDecoder;
-let createReadableStreamAsyncIterator;
-let from;
+var StringDecoder;
+var createReadableStreamAsyncIterator;
+var from;
 __nccwpck_require__(4124)(Readable, Stream);
-const errorOrDestroy = destroyImpl.errorOrDestroy;
-const kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
+var errorOrDestroy = destroyImpl.errorOrDestroy;
+var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
 function prependListener(emitter, event, fn) {
   // Sadly this is not cacheable as some libraries bundle their own
   // event emitter implementation with them.
@@ -97594,7 +97679,7 @@ function Readable(options) {
 
   // Checking for a Stream.Duplex instance is faster here instead of inside
   // the ReadableState constructor, at least with V8 6.5
-  const isDuplex = this instanceof Duplex;
+  var isDuplex = this instanceof Duplex;
   this._readableState = new ReadableState(options, this, isDuplex);
 
   // legacy
@@ -97610,13 +97695,13 @@ Object.defineProperty(Readable.prototype, 'destroyed', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     if (this._readableState === undefined) {
       return false;
     }
     return this._readableState.destroyed;
   },
-  set(value) {
+  set: function set(value) {
     // we ignore the value if the stream
     // has not been initialized yet
     if (!this._readableState) {
@@ -97727,14 +97812,14 @@ Readable.prototype.isPaused = function () {
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
   if (!StringDecoder) StringDecoder = (__nccwpck_require__(4841)/* .StringDecoder */ .s);
-  const decoder = new StringDecoder(enc);
+  var decoder = new StringDecoder(enc);
   this._readableState.decoder = decoder;
   // If setEncoding(null), decoder.encoding equals utf8
   this._readableState.encoding = this._readableState.decoder.encoding;
 
   // Iterate over current buffer to convert already stored Buffers:
-  let p = this._readableState.buffer.head;
-  let content = '';
+  var p = this._readableState.buffer.head;
+  var content = '';
   while (p !== null) {
     content += decoder.write(p.data);
     p = p.next;
@@ -97746,7 +97831,7 @@ Readable.prototype.setEncoding = function (enc) {
 };
 
 // Don't raise the hwm > 1GB
-const MAX_HWM = 0x40000000;
+var MAX_HWM = 0x40000000;
 function computeNewHighWaterMark(n) {
   if (n >= MAX_HWM) {
     // TODO(ronag): Throw ERR_VALUE_OUT_OF_RANGE.
@@ -97973,7 +98058,7 @@ function maybeReadMore_(stream, state) {
   //   read()s. The execution ends in this method again after the _read() ends
   //   up calling push() with more data.
   while (!state.reading && !state.ended && (state.length < state.highWaterMark || state.flowing && state.length === 0)) {
-    const len = state.length;
+    var len = state.length;
     debug('maybeReadMore read 0');
     stream.read(0);
     if (len === state.length)
@@ -98170,8 +98255,8 @@ Readable.prototype.unpipe = function (dest) {
 // set up data events if they are asked for
 // Ensure readable listeners eventually get something
 Readable.prototype.on = function (ev, fn) {
-  const res = Stream.prototype.on.call(this, ev, fn);
-  const state = this._readableState;
+  var res = Stream.prototype.on.call(this, ev, fn);
+  var state = this._readableState;
   if (ev === 'data') {
     // update readableListening so that resume() may be a no-op
     // a few lines down. This is needed to support once('readable').
@@ -98196,7 +98281,7 @@ Readable.prototype.on = function (ev, fn) {
 };
 Readable.prototype.addListener = Readable.prototype.on;
 Readable.prototype.removeListener = function (ev, fn) {
-  const res = Stream.prototype.removeListener.call(this, ev, fn);
+  var res = Stream.prototype.removeListener.call(this, ev, fn);
   if (ev === 'readable') {
     // We need to check if there is someone still listening to
     // readable and reset the state. However this needs to happen
@@ -98209,7 +98294,7 @@ Readable.prototype.removeListener = function (ev, fn) {
   return res;
 };
 Readable.prototype.removeAllListeners = function (ev) {
-  const res = Stream.prototype.removeAllListeners.apply(this, arguments);
+  var res = Stream.prototype.removeAllListeners.apply(this, arguments);
   if (ev === 'readable' || ev === undefined) {
     // We need to check if there is someone still listening to
     // readable and reset the state. However this needs to happen
@@ -98222,7 +98307,7 @@ Readable.prototype.removeAllListeners = function (ev) {
   return res;
 };
 function updateReadableListening(self) {
-  const state = self._readableState;
+  var state = self._readableState;
   state.readableListening = self.listenerCount('readable') > 0;
   if (state.resumeScheduled && !state.paused) {
     // flowing needs to be set to true now, otherwise
@@ -98281,7 +98366,7 @@ Readable.prototype.pause = function () {
   return this;
 };
 function flow(stream) {
-  const state = stream._readableState;
+  var state = stream._readableState;
   debug('flow', state.flowing);
   while (state.flowing && stream.read() !== null);
 }
@@ -98290,23 +98375,24 @@ function flow(stream) {
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
 Readable.prototype.wrap = function (stream) {
+  var _this = this;
   var state = this._readableState;
   var paused = false;
-  stream.on('end', () => {
+  stream.on('end', function () {
     debug('wrapped end');
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
-      if (chunk && chunk.length) this.push(chunk);
+      if (chunk && chunk.length) _this.push(chunk);
     }
-    this.push(null);
+    _this.push(null);
   });
-  stream.on('data', chunk => {
+  stream.on('data', function (chunk) {
     debug('wrapped data');
     if (state.decoder) chunk = state.decoder.write(chunk);
 
     // don't skip over falsy values in objectMode
     if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
-    var ret = this.push(chunk);
+    var ret = _this.push(chunk);
     if (!ret) {
       paused = true;
       stream.pause();
@@ -98332,7 +98418,7 @@ Readable.prototype.wrap = function (stream) {
 
   // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-  this._read = n => {
+  this._read = function (n) {
     debug('wrapped _read', n);
     if (paused) {
       paused = false;
@@ -98389,7 +98475,7 @@ Object.defineProperty(Readable.prototype, 'readableLength', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     return this._readableState.length;
   }
 });
@@ -98431,7 +98517,7 @@ function endReadableNT(state, stream) {
     if (state.autoDestroy) {
       // In case of duplex streams we need a way to detect
       // if the writable side is ready for autoDestroy as well
-      const wState = stream._writableState;
+      var wState = stream._writableState;
       if (!wState || wState.autoDestroy && wState.finished) {
         stream.destroy();
       }
@@ -98525,12 +98611,12 @@ function indexOf(xs, x) {
 
 
 module.exports = Transform;
-const _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
+var _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
   ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
   ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
   ERR_TRANSFORM_ALREADY_TRANSFORMING = _require$codes.ERR_TRANSFORM_ALREADY_TRANSFORMING,
   ERR_TRANSFORM_WITH_LENGTH_0 = _require$codes.ERR_TRANSFORM_WITH_LENGTH_0;
-const Duplex = __nccwpck_require__(1359);
+var Duplex = __nccwpck_require__(1359);
 __nccwpck_require__(4124)(Transform, Duplex);
 function afterTransform(er, data) {
   var ts = this._transformState;
@@ -98579,9 +98665,10 @@ function Transform(options) {
   this.on('prefinish', prefinish);
 }
 function prefinish() {
+  var _this = this;
   if (typeof this._flush === 'function' && !this._readableState.destroyed) {
-    this._flush((er, data) => {
-      done(this, er, data);
+    this._flush(function (er, data) {
+      done(_this, er, data);
     });
   } else {
     done(this, null, null);
@@ -98631,7 +98718,7 @@ Transform.prototype._read = function (n) {
   }
 };
 Transform.prototype._destroy = function (err, cb) {
-  Duplex.prototype._destroy.call(this, err, err2 => {
+  Duplex.prototype._destroy.call(this, err, function (err2) {
     cb(err2);
   });
 };
@@ -98695,10 +98782,11 @@ function WriteReq(chunk, encoding, cb) {
 // It seems a linked list but it is not
 // there will be only 2 of these for each stream
 function CorkedRequest(state) {
+  var _this = this;
   this.next = null;
   this.entry = null;
-  this.finish = () => {
-    onCorkedFinish(this, state);
+  this.finish = function () {
+    onCorkedFinish(_this, state);
   };
 }
 /* </replacement> */
@@ -98710,7 +98798,7 @@ var Duplex;
 Writable.WritableState = WritableState;
 
 /*<replacement>*/
-const internalUtil = {
+var internalUtil = {
   deprecate: __nccwpck_require__(7127)
 };
 /*</replacement>*/
@@ -98719,18 +98807,18 @@ const internalUtil = {
 var Stream = __nccwpck_require__(2387);
 /*</replacement>*/
 
-const Buffer = (__nccwpck_require__(4300).Buffer);
-const OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
+var Buffer = (__nccwpck_require__(4300).Buffer);
+var OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
 }
 function _isUint8Array(obj) {
   return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
 }
-const destroyImpl = __nccwpck_require__(7049);
-const _require = __nccwpck_require__(9948),
+var destroyImpl = __nccwpck_require__(7049);
+var _require = __nccwpck_require__(9948),
   getHighWaterMark = _require.getHighWaterMark;
-const _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
+var _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
   ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
   ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
   ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
@@ -98739,7 +98827,7 @@ const _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
   ERR_STREAM_NULL_VALUES = _require$codes.ERR_STREAM_NULL_VALUES,
   ERR_STREAM_WRITE_AFTER_END = _require$codes.ERR_STREAM_WRITE_AFTER_END,
   ERR_UNKNOWN_ENCODING = _require$codes.ERR_UNKNOWN_ENCODING;
-const errorOrDestroy = destroyImpl.errorOrDestroy;
+var errorOrDestroy = destroyImpl.errorOrDestroy;
 __nccwpck_require__(4124)(Writable, Stream);
 function nop() {}
 function WritableState(options, stream, isDuplex) {
@@ -98897,7 +98985,7 @@ function Writable(options) {
 
   // Checking for a Stream.Duplex instance is faster here instead of inside
   // the WritableState constructor, at least with V8 6.5
-  const isDuplex = this instanceof Duplex;
+  var isDuplex = this instanceof Duplex;
   if (!isDuplex && !realHasInstance.call(Writable, this)) return new Writable(options);
   this._writableState = new WritableState(options, this, isDuplex);
 
@@ -99021,9 +99109,9 @@ function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
   if (state.writing || state.corked) {
     var last = state.lastBufferedRequest;
     state.lastBufferedRequest = {
-      chunk,
-      encoding,
-      isBuf,
+      chunk: chunk,
+      encoding: encoding,
+      isBuf: isBuf,
       callback: cb,
       next: null
     };
@@ -99196,7 +99284,7 @@ Object.defineProperty(Writable.prototype, 'writableLength', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     return this._writableState.length;
   }
 });
@@ -99204,7 +99292,7 @@ function needFinish(state) {
   return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
 }
 function callFinal(stream, state) {
-  stream._final(err => {
+  stream._final(function (err) {
     state.pendingcb--;
     if (err) {
       errorOrDestroy(stream, err);
@@ -99236,7 +99324,7 @@ function finishMaybe(stream, state) {
       if (state.autoDestroy) {
         // In case of duplex streams we need a way to detect
         // if the readable side is ready for autoDestroy as well
-        const rState = stream._readableState;
+        var rState = stream._readableState;
         if (!rState || rState.autoDestroy && rState.endEmitted) {
           stream.destroy();
         }
@@ -99272,13 +99360,13 @@ Object.defineProperty(Writable.prototype, 'destroyed', {
   // because otherwise some prototype manipulation in
   // userland will fail
   enumerable: false,
-  get() {
+  get: function get() {
     if (this._writableState === undefined) {
       return false;
     }
     return this._writableState.destroyed;
   },
-  set(value) {
+  set: function set(value) {
     // we ignore the value if the stream
     // has not been initialized yet
     if (!this._writableState) {
@@ -99304,24 +99392,28 @@ Writable.prototype._destroy = function (err, cb) {
 "use strict";
 
 
-const finished = __nccwpck_require__(6080);
-const kLastResolve = Symbol('lastResolve');
-const kLastReject = Symbol('lastReject');
-const kError = Symbol('error');
-const kEnded = Symbol('ended');
-const kLastPromise = Symbol('lastPromise');
-const kHandlePromise = Symbol('handlePromise');
-const kStream = Symbol('stream');
+var _Object$setPrototypeO;
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var finished = __nccwpck_require__(6080);
+var kLastResolve = Symbol('lastResolve');
+var kLastReject = Symbol('lastReject');
+var kError = Symbol('error');
+var kEnded = Symbol('ended');
+var kLastPromise = Symbol('lastPromise');
+var kHandlePromise = Symbol('handlePromise');
+var kStream = Symbol('stream');
 function createIterResult(value, done) {
   return {
-    value,
-    done
+    value: value,
+    done: done
   };
 }
 function readAndResolve(iter) {
-  const resolve = iter[kLastResolve];
+  var resolve = iter[kLastResolve];
   if (resolve !== null) {
-    const data = iter[kStream].read();
+    var data = iter[kStream].read();
     // we defer if data is null
     // we can be expecting either 'end' or
     // 'error'
@@ -99339,8 +99431,8 @@ function onReadable(iter) {
   process.nextTick(readAndResolve, iter);
 }
 function wrapForNext(lastPromise, iter) {
-  return (resolve, reject) => {
-    lastPromise.then(() => {
+  return function (resolve, reject) {
+    lastPromise.then(function () {
       if (iter[kEnded]) {
         resolve(createIterResult(undefined, true));
         return;
@@ -99349,15 +99441,16 @@ function wrapForNext(lastPromise, iter) {
     }, reject);
   };
 }
-const AsyncIteratorPrototype = Object.getPrototypeOf(function () {});
-const ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf({
+var AsyncIteratorPrototype = Object.getPrototypeOf(function () {});
+var ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf((_Object$setPrototypeO = {
   get stream() {
     return this[kStream];
   },
-  next() {
+  next: function next() {
+    var _this = this;
     // if we have detected an error in the meanwhile
     // reject straight away
-    const error = this[kError];
+    var error = this[kError];
     if (error !== null) {
       return Promise.reject(error);
     }
@@ -99369,10 +99462,10 @@ const ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf({
       // called, the error will be emitted via nextTick, and
       // we cannot guarantee that there is no error lingering around
       // waiting to be emitted.
-      return new Promise((resolve, reject) => {
-        process.nextTick(() => {
-          if (this[kError]) {
-            reject(this[kError]);
+      return new Promise(function (resolve, reject) {
+        process.nextTick(function () {
+          if (_this[kError]) {
+            reject(_this[kError]);
           } else {
             resolve(createIterResult(undefined, true));
           }
@@ -99384,14 +99477,14 @@ const ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf({
     // we will wait for the previous Promise to finish
     // this logic is optimized to support for await loops,
     // where next() is only called once at a time
-    const lastPromise = this[kLastPromise];
-    let promise;
+    var lastPromise = this[kLastPromise];
+    var promise;
     if (lastPromise) {
       promise = new Promise(wrapForNext(lastPromise, this));
     } else {
       // fast path needed to support multiple this.push()
       // without triggering the next() queue
-      const data = this[kStream].read();
+      var data = this[kStream].read();
       if (data !== null) {
         return Promise.resolve(createIterResult(data, false));
       }
@@ -99399,70 +99492,60 @@ const ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf({
     }
     this[kLastPromise] = promise;
     return promise;
-  },
-  [Symbol.asyncIterator]() {
-    return this;
-  },
-  return() {
-    // destroy(err, cb) is a private API
-    // we can guarantee we have that here, because we control the
-    // Readable class this is attached to
-    return new Promise((resolve, reject) => {
-      this[kStream].destroy(null, err => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(createIterResult(undefined, true));
-      });
-    });
   }
-}, AsyncIteratorPrototype);
-const createReadableStreamAsyncIterator = stream => {
-  const iterator = Object.create(ReadableStreamAsyncIteratorPrototype, {
-    [kStream]: {
-      value: stream,
-      writable: true
-    },
-    [kLastResolve]: {
-      value: null,
-      writable: true
-    },
-    [kLastReject]: {
-      value: null,
-      writable: true
-    },
-    [kError]: {
-      value: null,
-      writable: true
-    },
-    [kEnded]: {
-      value: stream._readableState.endEmitted,
-      writable: true
-    },
-    // the function passed to new Promise
-    // is cached so we avoid allocating a new
-    // closure at every run
-    [kHandlePromise]: {
-      value: (resolve, reject) => {
-        const data = iterator[kStream].read();
-        if (data) {
-          iterator[kLastPromise] = null;
-          iterator[kLastResolve] = null;
-          iterator[kLastReject] = null;
-          resolve(createIterResult(data, false));
-        } else {
-          iterator[kLastResolve] = resolve;
-          iterator[kLastReject] = reject;
-        }
-      },
-      writable: true
-    }
+}, _defineProperty(_Object$setPrototypeO, Symbol.asyncIterator, function () {
+  return this;
+}), _defineProperty(_Object$setPrototypeO, "return", function _return() {
+  var _this2 = this;
+  // destroy(err, cb) is a private API
+  // we can guarantee we have that here, because we control the
+  // Readable class this is attached to
+  return new Promise(function (resolve, reject) {
+    _this2[kStream].destroy(null, function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(createIterResult(undefined, true));
+    });
   });
+}), _Object$setPrototypeO), AsyncIteratorPrototype);
+var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterator(stream) {
+  var _Object$create;
+  var iterator = Object.create(ReadableStreamAsyncIteratorPrototype, (_Object$create = {}, _defineProperty(_Object$create, kStream, {
+    value: stream,
+    writable: true
+  }), _defineProperty(_Object$create, kLastResolve, {
+    value: null,
+    writable: true
+  }), _defineProperty(_Object$create, kLastReject, {
+    value: null,
+    writable: true
+  }), _defineProperty(_Object$create, kError, {
+    value: null,
+    writable: true
+  }), _defineProperty(_Object$create, kEnded, {
+    value: stream._readableState.endEmitted,
+    writable: true
+  }), _defineProperty(_Object$create, kHandlePromise, {
+    value: function value(resolve, reject) {
+      var data = iterator[kStream].read();
+      if (data) {
+        iterator[kLastPromise] = null;
+        iterator[kLastResolve] = null;
+        iterator[kLastReject] = null;
+        resolve(createIterResult(data, false));
+      } else {
+        iterator[kLastResolve] = resolve;
+        iterator[kLastReject] = reject;
+      }
+    },
+    writable: true
+  }), _Object$create));
   iterator[kLastPromise] = null;
-  finished(stream, err => {
+  finished(stream, function (err) {
     if (err && err.code !== 'ERR_STREAM_PREMATURE_CLOSE') {
-      const reject = iterator[kLastReject];
+      var reject = iterator[kLastReject];
       // reject if we are waiting for data in the Promise
       // returned by next() and store the error
       if (reject !== null) {
@@ -99474,7 +99557,7 @@ const createReadableStreamAsyncIterator = stream => {
       iterator[kError] = err;
       return;
     }
-    const resolve = iterator[kLastResolve];
+    var resolve = iterator[kLastResolve];
     if (resolve !== null) {
       iterator[kLastPromise] = null;
       iterator[kLastResolve] = null;
@@ -99499,156 +99582,184 @@ module.exports = createReadableStreamAsyncIterator;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-const _require = __nccwpck_require__(4300),
+var _require = __nccwpck_require__(4300),
   Buffer = _require.Buffer;
-const _require2 = __nccwpck_require__(3837),
+var _require2 = __nccwpck_require__(3837),
   inspect = _require2.inspect;
-const custom = inspect && inspect.custom || 'inspect';
+var custom = inspect && inspect.custom || 'inspect';
 function copyBuffer(src, target, offset) {
   Buffer.prototype.copy.call(src, target, offset);
 }
-module.exports = class BufferList {
-  constructor() {
+module.exports = /*#__PURE__*/function () {
+  function BufferList() {
+    _classCallCheck(this, BufferList);
     this.head = null;
     this.tail = null;
     this.length = 0;
   }
-  push(v) {
-    const entry = {
-      data: v,
-      next: null
-    };
-    if (this.length > 0) this.tail.next = entry;else this.head = entry;
-    this.tail = entry;
-    ++this.length;
-  }
-  unshift(v) {
-    const entry = {
-      data: v,
-      next: this.head
-    };
-    if (this.length === 0) this.tail = entry;
-    this.head = entry;
-    ++this.length;
-  }
-  shift() {
-    if (this.length === 0) return;
-    const ret = this.head.data;
-    if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
-    --this.length;
-    return ret;
-  }
-  clear() {
-    this.head = this.tail = null;
-    this.length = 0;
-  }
-  join(s) {
-    if (this.length === 0) return '';
-    var p = this.head;
-    var ret = '' + p.data;
-    while (p = p.next) ret += s + p.data;
-    return ret;
-  }
-  concat(n) {
-    if (this.length === 0) return Buffer.alloc(0);
-    const ret = Buffer.allocUnsafe(n >>> 0);
-    var p = this.head;
-    var i = 0;
-    while (p) {
-      copyBuffer(p.data, ret, i);
-      i += p.data.length;
-      p = p.next;
+  _createClass(BufferList, [{
+    key: "push",
+    value: function push(v) {
+      var entry = {
+        data: v,
+        next: null
+      };
+      if (this.length > 0) this.tail.next = entry;else this.head = entry;
+      this.tail = entry;
+      ++this.length;
     }
-    return ret;
-  }
-
-  // Consumes a specified amount of bytes or characters from the buffered data.
-  consume(n, hasStrings) {
-    var ret;
-    if (n < this.head.data.length) {
-      // `slice` is the same for buffers and strings.
-      ret = this.head.data.slice(0, n);
-      this.head.data = this.head.data.slice(n);
-    } else if (n === this.head.data.length) {
-      // First chunk is a perfect match.
-      ret = this.shift();
-    } else {
-      // Result spans more than one buffer.
-      ret = hasStrings ? this._getString(n) : this._getBuffer(n);
+  }, {
+    key: "unshift",
+    value: function unshift(v) {
+      var entry = {
+        data: v,
+        next: this.head
+      };
+      if (this.length === 0) this.tail = entry;
+      this.head = entry;
+      ++this.length;
     }
-    return ret;
-  }
-  first() {
-    return this.head.data;
-  }
-
-  // Consumes a specified amount of characters from the buffered data.
-  _getString(n) {
-    var p = this.head;
-    var c = 1;
-    var ret = p.data;
-    n -= ret.length;
-    while (p = p.next) {
-      const str = p.data;
-      const nb = n > str.length ? str.length : n;
-      if (nb === str.length) ret += str;else ret += str.slice(0, n);
-      n -= nb;
-      if (n === 0) {
-        if (nb === str.length) {
-          ++c;
-          if (p.next) this.head = p.next;else this.head = this.tail = null;
-        } else {
-          this.head = p;
-          p.data = str.slice(nb);
-        }
-        break;
+  }, {
+    key: "shift",
+    value: function shift() {
+      if (this.length === 0) return;
+      var ret = this.head.data;
+      if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
+      --this.length;
+      return ret;
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.head = this.tail = null;
+      this.length = 0;
+    }
+  }, {
+    key: "join",
+    value: function join(s) {
+      if (this.length === 0) return '';
+      var p = this.head;
+      var ret = '' + p.data;
+      while (p = p.next) ret += s + p.data;
+      return ret;
+    }
+  }, {
+    key: "concat",
+    value: function concat(n) {
+      if (this.length === 0) return Buffer.alloc(0);
+      var ret = Buffer.allocUnsafe(n >>> 0);
+      var p = this.head;
+      var i = 0;
+      while (p) {
+        copyBuffer(p.data, ret, i);
+        i += p.data.length;
+        p = p.next;
       }
-      ++c;
+      return ret;
     }
-    this.length -= c;
-    return ret;
-  }
 
-  // Consumes a specified amount of bytes from the buffered data.
-  _getBuffer(n) {
-    const ret = Buffer.allocUnsafe(n);
-    var p = this.head;
-    var c = 1;
-    p.data.copy(ret);
-    n -= p.data.length;
-    while (p = p.next) {
-      const buf = p.data;
-      const nb = n > buf.length ? buf.length : n;
-      buf.copy(ret, ret.length - n, 0, nb);
-      n -= nb;
-      if (n === 0) {
-        if (nb === buf.length) {
-          ++c;
-          if (p.next) this.head = p.next;else this.head = this.tail = null;
-        } else {
-          this.head = p;
-          p.data = buf.slice(nb);
-        }
-        break;
+    // Consumes a specified amount of bytes or characters from the buffered data.
+  }, {
+    key: "consume",
+    value: function consume(n, hasStrings) {
+      var ret;
+      if (n < this.head.data.length) {
+        // `slice` is the same for buffers and strings.
+        ret = this.head.data.slice(0, n);
+        this.head.data = this.head.data.slice(n);
+      } else if (n === this.head.data.length) {
+        // First chunk is a perfect match.
+        ret = this.shift();
+      } else {
+        // Result spans more than one buffer.
+        ret = hasStrings ? this._getString(n) : this._getBuffer(n);
       }
-      ++c;
+      return ret;
     }
-    this.length -= c;
-    return ret;
-  }
+  }, {
+    key: "first",
+    value: function first() {
+      return this.head.data;
+    }
 
-  // Make sure the linked list only shows the minimal necessary information.
-  [custom](_, options) {
-    return inspect(this, _objectSpread(_objectSpread({}, options), {}, {
-      // Only inspect one level.
-      depth: 0,
-      // It should not recurse.
-      customInspect: false
-    }));
-  }
-};
+    // Consumes a specified amount of characters from the buffered data.
+  }, {
+    key: "_getString",
+    value: function _getString(n) {
+      var p = this.head;
+      var c = 1;
+      var ret = p.data;
+      n -= ret.length;
+      while (p = p.next) {
+        var str = p.data;
+        var nb = n > str.length ? str.length : n;
+        if (nb === str.length) ret += str;else ret += str.slice(0, n);
+        n -= nb;
+        if (n === 0) {
+          if (nb === str.length) {
+            ++c;
+            if (p.next) this.head = p.next;else this.head = this.tail = null;
+          } else {
+            this.head = p;
+            p.data = str.slice(nb);
+          }
+          break;
+        }
+        ++c;
+      }
+      this.length -= c;
+      return ret;
+    }
+
+    // Consumes a specified amount of bytes from the buffered data.
+  }, {
+    key: "_getBuffer",
+    value: function _getBuffer(n) {
+      var ret = Buffer.allocUnsafe(n);
+      var p = this.head;
+      var c = 1;
+      p.data.copy(ret);
+      n -= p.data.length;
+      while (p = p.next) {
+        var buf = p.data;
+        var nb = n > buf.length ? buf.length : n;
+        buf.copy(ret, ret.length - n, 0, nb);
+        n -= nb;
+        if (n === 0) {
+          if (nb === buf.length) {
+            ++c;
+            if (p.next) this.head = p.next;else this.head = this.tail = null;
+          } else {
+            this.head = p;
+            p.data = buf.slice(nb);
+          }
+          break;
+        }
+        ++c;
+      }
+      this.length -= c;
+      return ret;
+    }
+
+    // Make sure the linked list only shows the minimal necessary information.
+  }, {
+    key: custom,
+    value: function value(_, options) {
+      return inspect(this, _objectSpread(_objectSpread({}, options), {}, {
+        // Only inspect one level.
+        depth: 0,
+        // It should not recurse.
+        customInspect: false
+      }));
+    }
+  }]);
+  return BufferList;
+}();
 
 /***/ }),
 
@@ -99660,8 +99771,9 @@ module.exports = class BufferList {
 
 // undocumented cb() API, needed for core, not for public API
 function destroy(err, cb) {
-  const readableDestroyed = this._readableState && this._readableState.destroyed;
-  const writableDestroyed = this._writableState && this._writableState.destroyed;
+  var _this = this;
+  var readableDestroyed = this._readableState && this._readableState.destroyed;
+  var writableDestroyed = this._writableState && this._writableState.destroyed;
   if (readableDestroyed || writableDestroyed) {
     if (cb) {
       cb(err);
@@ -99687,21 +99799,21 @@ function destroy(err, cb) {
   if (this._writableState) {
     this._writableState.destroyed = true;
   }
-  this._destroy(err || null, err => {
+  this._destroy(err || null, function (err) {
     if (!cb && err) {
-      if (!this._writableState) {
-        process.nextTick(emitErrorAndCloseNT, this, err);
-      } else if (!this._writableState.errorEmitted) {
-        this._writableState.errorEmitted = true;
-        process.nextTick(emitErrorAndCloseNT, this, err);
+      if (!_this._writableState) {
+        process.nextTick(emitErrorAndCloseNT, _this, err);
+      } else if (!_this._writableState.errorEmitted) {
+        _this._writableState.errorEmitted = true;
+        process.nextTick(emitErrorAndCloseNT, _this, err);
       } else {
-        process.nextTick(emitCloseNT, this);
+        process.nextTick(emitCloseNT, _this);
       }
     } else if (cb) {
-      process.nextTick(emitCloseNT, this);
+      process.nextTick(emitCloseNT, _this);
       cb(err);
     } else {
-      process.nextTick(emitCloseNT, this);
+      process.nextTick(emitCloseNT, _this);
     }
   });
   return this;
@@ -99742,14 +99854,14 @@ function errorOrDestroy(stream, err) {
   // the error to be emitted nextTick. In a future
   // semver major update we should change the default to this.
 
-  const rState = stream._readableState;
-  const wState = stream._writableState;
+  var rState = stream._readableState;
+  var wState = stream._writableState;
   if (rState && rState.autoDestroy || wState && wState.autoDestroy) stream.destroy(err);else stream.emit('error', err);
 }
 module.exports = {
-  destroy,
-  undestroy,
-  errorOrDestroy
+  destroy: destroy,
+  undestroy: undestroy,
+  errorOrDestroy: errorOrDestroy
 };
 
 /***/ }),
@@ -99763,9 +99875,9 @@ module.exports = {
 
 
 
-const ERR_STREAM_PREMATURE_CLOSE = (__nccwpck_require__(7214)/* .codes.ERR_STREAM_PREMATURE_CLOSE */ .q.ERR_STREAM_PREMATURE_CLOSE);
+var ERR_STREAM_PREMATURE_CLOSE = (__nccwpck_require__(7214)/* .codes.ERR_STREAM_PREMATURE_CLOSE */ .q.ERR_STREAM_PREMATURE_CLOSE);
 function once(callback) {
-  let called = false;
+  var called = false;
   return function () {
     if (called) return;
     called = true;
@@ -99783,28 +99895,28 @@ function eos(stream, opts, callback) {
   if (typeof opts === 'function') return eos(stream, null, opts);
   if (!opts) opts = {};
   callback = once(callback || noop);
-  let readable = opts.readable || opts.readable !== false && stream.readable;
-  let writable = opts.writable || opts.writable !== false && stream.writable;
-  const onlegacyfinish = () => {
+  var readable = opts.readable || opts.readable !== false && stream.readable;
+  var writable = opts.writable || opts.writable !== false && stream.writable;
+  var onlegacyfinish = function onlegacyfinish() {
     if (!stream.writable) onfinish();
   };
   var writableEnded = stream._writableState && stream._writableState.finished;
-  const onfinish = () => {
+  var onfinish = function onfinish() {
     writable = false;
     writableEnded = true;
     if (!readable) callback.call(stream);
   };
   var readableEnded = stream._readableState && stream._readableState.endEmitted;
-  const onend = () => {
+  var onend = function onend() {
     readable = false;
     readableEnded = true;
     if (!writable) callback.call(stream);
   };
-  const onerror = err => {
+  var onerror = function onerror(err) {
     callback.call(stream, err);
   };
-  const onclose = () => {
-    let err;
+  var onclose = function onclose() {
+    var err;
     if (readable && !readableEnded) {
       if (!stream._readableState || !stream._readableState.ended) err = new ERR_STREAM_PREMATURE_CLOSE();
       return callback.call(stream, err);
@@ -99814,7 +99926,7 @@ function eos(stream, opts, callback) {
       return callback.call(stream, err);
     }
   };
-  const onrequest = () => {
+  var onrequest = function onrequest() {
     stream.req.on('finish', onfinish);
   };
   if (isRequest(stream)) {
@@ -99860,18 +99972,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-const ERR_INVALID_ARG_TYPE = (__nccwpck_require__(7214)/* .codes.ERR_INVALID_ARG_TYPE */ .q.ERR_INVALID_ARG_TYPE);
+var ERR_INVALID_ARG_TYPE = (__nccwpck_require__(7214)/* .codes.ERR_INVALID_ARG_TYPE */ .q.ERR_INVALID_ARG_TYPE);
 function from(Readable, iterable, opts) {
-  let iterator;
+  var iterator;
   if (iterable && typeof iterable.next === 'function') {
     iterator = iterable;
   } else if (iterable && iterable[Symbol.asyncIterator]) iterator = iterable[Symbol.asyncIterator]();else if (iterable && iterable[Symbol.iterator]) iterator = iterable[Symbol.iterator]();else throw new ERR_INVALID_ARG_TYPE('iterable', ['Iterable'], iterable);
-  const readable = new Readable(_objectSpread({
+  var readable = new Readable(_objectSpread({
     objectMode: true
   }, opts));
   // Reading boolean to protect against _read
   // being called before last iteration completion.
-  let reading = false;
+  var reading = false;
   readable._read = function () {
     if (!reading) {
       reading = true;
@@ -99884,7 +99996,7 @@ function from(Readable, iterable, opts) {
   function _next2() {
     _next2 = _asyncToGenerator(function* () {
       try {
-        const _yield$iterator$next = yield iterator.next(),
+        var _yield$iterator$next = yield iterator.next(),
           value = _yield$iterator$next.value,
           done = _yield$iterator$next.done;
         if (done) {
@@ -99904,6 +100016,7 @@ function from(Readable, iterable, opts) {
 }
 module.exports = from;
 
+
 /***/ }),
 
 /***/ 6989:
@@ -99915,16 +100028,16 @@ module.exports = from;
 
 
 
-let eos;
+var eos;
 function once(callback) {
-  let called = false;
+  var called = false;
   return function () {
     if (called) return;
     called = true;
-    callback(...arguments);
+    callback.apply(void 0, arguments);
   };
 }
-const _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
+var _require$codes = (__nccwpck_require__(7214)/* .codes */ .q),
   ERR_MISSING_ARGS = _require$codes.ERR_MISSING_ARGS,
   ERR_STREAM_DESTROYED = _require$codes.ERR_STREAM_DESTROYED;
 function noop(err) {
@@ -99936,21 +100049,21 @@ function isRequest(stream) {
 }
 function destroyer(stream, reading, writing, callback) {
   callback = once(callback);
-  let closed = false;
-  stream.on('close', () => {
+  var closed = false;
+  stream.on('close', function () {
     closed = true;
   });
   if (eos === undefined) eos = __nccwpck_require__(6080);
   eos(stream, {
     readable: reading,
     writable: writing
-  }, err => {
+  }, function (err) {
     if (err) return callback(err);
     closed = true;
     callback();
   });
-  let destroyed = false;
-  return err => {
+  var destroyed = false;
+  return function (err) {
     if (closed) return;
     if (destroyed) return;
     destroyed = true;
@@ -99976,15 +100089,15 @@ function pipeline() {
   for (var _len = arguments.length, streams = new Array(_len), _key = 0; _key < _len; _key++) {
     streams[_key] = arguments[_key];
   }
-  const callback = popCallback(streams);
+  var callback = popCallback(streams);
   if (Array.isArray(streams[0])) streams = streams[0];
   if (streams.length < 2) {
     throw new ERR_MISSING_ARGS('streams');
   }
-  let error;
-  const destroys = streams.map(function (stream, i) {
-    const reading = i < streams.length - 1;
-    const writing = i > 0;
+  var error;
+  var destroys = streams.map(function (stream, i) {
+    var reading = i < streams.length - 1;
+    var writing = i > 0;
     return destroyer(stream, reading, writing, function (err) {
       if (!error) error = err;
       if (err) destroys.forEach(call);
@@ -100005,15 +100118,15 @@ module.exports = pipeline;
 "use strict";
 
 
-const ERR_INVALID_OPT_VALUE = (__nccwpck_require__(7214)/* .codes.ERR_INVALID_OPT_VALUE */ .q.ERR_INVALID_OPT_VALUE);
+var ERR_INVALID_OPT_VALUE = (__nccwpck_require__(7214)/* .codes.ERR_INVALID_OPT_VALUE */ .q.ERR_INVALID_OPT_VALUE);
 function highWaterMarkFrom(options, isDuplex, duplexKey) {
   return options.highWaterMark != null ? options.highWaterMark : isDuplex ? options[duplexKey] : null;
 }
 function getHighWaterMark(state, options, duplexKey, isDuplex) {
-  const hwm = highWaterMarkFrom(options, isDuplex, duplexKey);
+  var hwm = highWaterMarkFrom(options, isDuplex, duplexKey);
   if (hwm != null) {
     if (!(isFinite(hwm) && Math.floor(hwm) === hwm) || hwm < 0) {
-      const name = isDuplex ? duplexKey : 'highWaterMark';
+      var name = isDuplex ? duplexKey : 'highWaterMark';
       throw new ERR_INVALID_OPT_VALUE(name, hwm);
     }
     return Math.floor(hwm);
@@ -100023,7 +100136,7 @@ function getHighWaterMark(state, options, duplexKey, isDuplex) {
   return state.objectMode ? 16 : 16 * 1024;
 }
 module.exports = {
-  getHighWaterMark
+  getHighWaterMark: getHighWaterMark
 };
 
 /***/ }),
