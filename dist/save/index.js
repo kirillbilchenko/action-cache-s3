@@ -112935,7 +112935,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(1017));
 const state_1 = __nccwpck_require__(9738);
 const utils_1 = __nccwpck_require__(1314);
-process.on("uncaughtException", (e) => core.info("warning: " + e.message));
+process.on("uncaughtException", e => core.info("warning: " + e.message));
 function saveCache() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -112953,7 +112953,7 @@ function saveCache() {
                     // Inputs are re-evaluted before the post action, so we want the original keys & tokens
                     accessKey: core.getState(state_1.State.AccessKey),
                     secretKey: core.getState(state_1.State.SecretKey),
-                    sessionToken: core.getState(state_1.State.SessionToken),
+                    sessionToken: core.getState(state_1.State.SessionToken)
                 });
                 const compressionMethod = yield utils.getCompressionMethod();
                 const cachePaths = yield utils.resolvePaths(paths);
@@ -113066,7 +113066,7 @@ function isGhes() {
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
 exports.isGhes = isGhes;
-function newMinio({ accessKey, secretKey, sessionToken, } = {}) {
+function newMinio({ accessKey, secretKey, sessionToken } = {}) {
     return new minio.Client({
         endPoint: core.getInput("endpoint"),
         port: getInputAsInt("port"),
@@ -113074,7 +113074,7 @@ function newMinio({ accessKey, secretKey, sessionToken, } = {}) {
         accessKey: accessKey !== null && accessKey !== void 0 ? accessKey : core.getInput("accessKey"),
         secretKey: secretKey !== null && secretKey !== void 0 ? secretKey : core.getInput("secretKey"),
         sessionToken: sessionToken !== null && sessionToken !== void 0 ? sessionToken : core.getInput("sessionToken"),
-        region: core.getInput("region"),
+        region: core.getInput("region")
     });
 }
 exports.newMinio = newMinio;
@@ -113086,8 +113086,8 @@ function getInputAsArray(name, options) {
     return core
         .getInput(name, options)
         .split("\n")
-        .map((s) => s.trim())
-        .filter((x) => x !== "");
+        .map(s => s.trim())
+        .filter(x => x !== "");
 }
 exports.getInputAsArray = getInputAsArray;
 function getInputAsInt(name, options) {
@@ -113105,7 +113105,9 @@ function formatSize(value, format = "bi") {
     const exp = (Math.log(value) / Math.log(multiple)) | 0;
     const size = Number((value / Math.pow(multiple, exp)).toFixed(2));
     return (size +
-        (exp ? (k + "MGTPEZY")[exp - 1] + suffix : "byte" + (size !== 1 ? "s" : "")));
+        (exp
+            ? (k + "MGTPEZY")[exp - 1] + suffix
+            : "byte" + (size !== 1 ? "s" : "")));
 }
 exports.formatSize = formatSize;
 function setCacheHitOutput(isCacheHit) {
@@ -113128,7 +113130,7 @@ function findObject(mc, bucket, key, restoreKeys, compressionMethod) {
             const fn = utils.getCacheFileName(compressionMethod);
             core.debug(`Finding object with prefix: ${restoreKey}`);
             let objects = yield listObjects(mc, bucket, restoreKey);
-            objects = objects.filter((o) => o.name.includes(fn));
+            objects = objects.filter(o => o.name.includes(fn));
             core.debug(`Found ${JSON.stringify(objects, null, 2)}`);
             if (objects.length < 1) {
                 continue;
@@ -113147,10 +113149,10 @@ function listObjects(mc, bucket, prefix) {
         const h = mc.listObjectsV2(bucket, prefix, true);
         const r = [];
         let resolved = false;
-        h.on("data", (obj) => {
+        h.on("data", obj => {
             r.push(obj);
         });
-        h.on("error", (e) => {
+        h.on("error", e => {
             resolved = true;
             reject(e);
         });

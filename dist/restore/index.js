@@ -112935,7 +112935,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(1017));
 const state_1 = __nccwpck_require__(9738);
 const utils_1 = __nccwpck_require__(1314);
-process.on("uncaughtException", (e) => core.info("warning: " + e.message));
+process.on("uncaughtException", e => core.info("warning: " + e.message));
 function restoreCache() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -112954,12 +112954,12 @@ function restoreCache() {
                 const compressionMethod = yield utils.getCompressionMethod();
                 const cacheFileName = utils.getCacheFileName(compressionMethod);
                 const archivePath = path.join(yield utils.createTempDirectory(), cacheFileName);
-                let efectiveKey = path.join(core.getInput("bucket_sub_folder"), key);
-                let effectiveRestoreKey = restoreKeys.map((element) => {
+                const efectiveKey = path.join(core.getInput("bucket_sub_folder"), key);
+                const effectiveRestoreKey = restoreKeys.map(element => {
                     return path.join(core.getInput("bucket_sub_folder"), element);
                 });
                 core.info("Cache path in the bucket: " + efectiveKey);
-                effectiveRestoreKey.forEach((element) => {
+                effectiveRestoreKey.forEach(element => {
                     core.info("Restore key:" + element);
                 });
                 const { item: obj, matchingKey } = yield (0, utils_1.findObject)(mc, bucket, efectiveKey, effectiveRestoreKey, compressionMethod);
@@ -113003,8 +113003,8 @@ function restoreCache() {
 }
 function downloadWithRetry(mc, bucketName, objectName, archivePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        var retryCount = 3;
-        var interval = 5000;
+        const retryCount = 3;
+        const interval = 5000;
         for (let i = 0; i <= 3; i++) {
             try {
                 yield mc.fGetObject(bucketName, objectName, archivePath);
@@ -113013,12 +113013,12 @@ function downloadWithRetry(mc, bucketName, objectName, archivePath) {
             }
             catch (err) {
                 if (err instanceof Error) {
-                    core.warning(`Failed to download object "${objectName}". Error: ${err.message}. Retrying in ${interval / 1000} seconds...`);
+                    core.warning(`Failed to download object "${objectName}". Error: name ${err.name} message ${err.message}. Retrying in ${interval / 1000} seconds...`);
                 }
                 else {
                     core.warning(`Failed to download object "${objectName}". Error: ${err}. Retrying in ${interval / 1000} seconds...`);
                 }
-                yield new Promise((resolve) => setTimeout(resolve, interval));
+                yield new Promise(resolve => setTimeout(resolve, interval));
             }
         }
         core.error(`Download failed after ${retryCount} attempts. For object ${objectName}`);
@@ -113096,7 +113096,7 @@ function isGhes() {
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
 exports.isGhes = isGhes;
-function newMinio({ accessKey, secretKey, sessionToken, } = {}) {
+function newMinio({ accessKey, secretKey, sessionToken } = {}) {
     return new minio.Client({
         endPoint: core.getInput("endpoint"),
         port: getInputAsInt("port"),
@@ -113104,7 +113104,7 @@ function newMinio({ accessKey, secretKey, sessionToken, } = {}) {
         accessKey: accessKey !== null && accessKey !== void 0 ? accessKey : core.getInput("accessKey"),
         secretKey: secretKey !== null && secretKey !== void 0 ? secretKey : core.getInput("secretKey"),
         sessionToken: sessionToken !== null && sessionToken !== void 0 ? sessionToken : core.getInput("sessionToken"),
-        region: core.getInput("region"),
+        region: core.getInput("region")
     });
 }
 exports.newMinio = newMinio;
@@ -113116,8 +113116,8 @@ function getInputAsArray(name, options) {
     return core
         .getInput(name, options)
         .split("\n")
-        .map((s) => s.trim())
-        .filter((x) => x !== "");
+        .map(s => s.trim())
+        .filter(x => x !== "");
 }
 exports.getInputAsArray = getInputAsArray;
 function getInputAsInt(name, options) {
@@ -113135,7 +113135,9 @@ function formatSize(value, format = "bi") {
     const exp = (Math.log(value) / Math.log(multiple)) | 0;
     const size = Number((value / Math.pow(multiple, exp)).toFixed(2));
     return (size +
-        (exp ? (k + "MGTPEZY")[exp - 1] + suffix : "byte" + (size !== 1 ? "s" : "")));
+        (exp
+            ? (k + "MGTPEZY")[exp - 1] + suffix
+            : "byte" + (size !== 1 ? "s" : "")));
 }
 exports.formatSize = formatSize;
 function setCacheHitOutput(isCacheHit) {
@@ -113158,7 +113160,7 @@ function findObject(mc, bucket, key, restoreKeys, compressionMethod) {
             const fn = utils.getCacheFileName(compressionMethod);
             core.debug(`Finding object with prefix: ${restoreKey}`);
             let objects = yield listObjects(mc, bucket, restoreKey);
-            objects = objects.filter((o) => o.name.includes(fn));
+            objects = objects.filter(o => o.name.includes(fn));
             core.debug(`Found ${JSON.stringify(objects, null, 2)}`);
             if (objects.length < 1) {
                 continue;
@@ -113177,10 +113179,10 @@ function listObjects(mc, bucket, prefix) {
         const h = mc.listObjectsV2(bucket, prefix, true);
         const r = [];
         let resolved = false;
-        h.on("data", (obj) => {
+        h.on("data", obj => {
             r.push(obj);
         });
-        h.on("error", (e) => {
+        h.on("error", e => {
             resolved = true;
             reject(e);
         });
