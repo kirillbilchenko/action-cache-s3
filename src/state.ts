@@ -3,5 +3,5 @@ export enum State {
     "PrimaryKey" = "primary-key",
     "AccessKey" = "access-key",
     "SecretKey" = "secret-key",
-    "SessionToken" = "session-token",
+    "SessionToken" = "session-token"
 }

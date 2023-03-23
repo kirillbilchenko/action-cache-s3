@@ -112984,7 +112984,7 @@ function restoreCache() {
                     }
                     else {
                         core.info("Restore cache using fallback cache");
-                        const fallbackMatchingKey = yield cache.restoreCache(paths, key, restoreKeys);
+                        const fallbackMatchingKey = yield cache.restoreCache(paths, key, restoreKeys, {}, true);
                         if (fallbackMatchingKey) {
                             (0, utils_1.setCacheHitOutput)(fallbackMatchingKey === key);
                             core.info("Fallback cache restored successfully");

@@ -1,5 +1,5 @@
-import * as minio from "minio";
-
 describe("save", () => {
-  test("save cache", async () => {});
+    test("save cache", async () => {
+        console.log("hello");
+    });
 });
