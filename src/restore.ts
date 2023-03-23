@@ -129,7 +129,7 @@ async function downloadWithRetry(
         } catch (err: unknown) {
             if (err instanceof Error) {
                 core.warning(
-                    `Failed to download object "${objectName}". Error: ${
+                    `Failed to download object "${objectName}". Error: name ${err.name} message ${
                         err.message
                     }. Retrying in ${interval / 1000} seconds...`
                 );
