@@ -155,15 +155,14 @@ export function saveMatchedKey(matchedKey: string) {
 }
 
 function getMatchedKey() {
-    return (
-        core.getState(State.MatchedKey) ||
-        core.getInput("key", { required: true })
-    );
+    return core.getState(State.MatchedKey);
 }
 
 export function isExactKeyMatch(): boolean {
     const matchedKey = getMatchedKey();
-    const inputKey = core.getState(State.PrimaryKey);
+    const inputKey =
+        core.getState(State.PrimaryKey) ||
+        core.getInput("key", { required: true });
     const result = getMatchedKey() === inputKey;
     core.debug(
         `isExactKeyMatch: matchedKey=${matchedKey} inputKey=${inputKey}, result=${result}`

@@ -113176,12 +113176,12 @@ function saveMatchedKey(matchedKey) {
 }
 exports.saveMatchedKey = saveMatchedKey;
 function getMatchedKey() {
-    return (core.getState(state_1.State.MatchedKey) ||
-        core.getInput("key", { required: true }));
+    return core.getState(state_1.State.MatchedKey);
 }
 function isExactKeyMatch() {
     const matchedKey = getMatchedKey();
-    const inputKey = core.getState(state_1.State.PrimaryKey);
+    const inputKey = core.getState(state_1.State.PrimaryKey) ||
+        core.getInput("key", { required: true });
     const result = getMatchedKey() === inputKey;
     core.debug(`isExactKeyMatch: matchedKey=${matchedKey} inputKey=${inputKey}, result=${result}`);
     return result;
