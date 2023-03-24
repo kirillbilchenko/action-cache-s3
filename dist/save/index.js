@@ -112939,6 +112939,10 @@ process.on("uncaughtException", e => core.info("warning: " + e.message));
 function saveCache() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            core.saveState(state_1.State.PrimaryKey, core.getInput("key", { required: true }));
+            core.saveState(state_1.State.AccessKey, core.getInput("accessKey"));
+            core.saveState(state_1.State.SecretKey, core.getInput("secretKey"));
+            core.saveState(state_1.State.SessionToken, core.getInput("sessionToken"));
             if ((0, utils_1.isExactKeyMatch)()) {
                 core.info("Cache was exact key match, not saving");
                 return;
