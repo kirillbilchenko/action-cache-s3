@@ -113202,7 +113202,8 @@ function saveMatchedKey(matchedKey) {
 }
 exports.saveMatchedKey = saveMatchedKey;
 function getMatchedKey() {
-    return core.getState(state_1.State.MatchedKey);
+    return (core.getState(state_1.State.MatchedKey) ||
+        core.getInput("key", { required: true }));
 }
 function isExactKeyMatch() {
     const matchedKey = getMatchedKey();
