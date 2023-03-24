@@ -112945,16 +112945,12 @@ function saveCache() {
             }
             const bucket = core.getInput("bucket", { required: true });
             // Inputs are re-evaluted before the post action, so we want the original key
-            const key = core.getState(state_1.State.PrimaryKey);
+            const key = core.getState(state_1.State.PrimaryKey) ||
+                core.getInput("key", { required: true });
             const useFallback = (0, utils_1.getInputAsBoolean)("use-fallback");
             const paths = (0, utils_1.getInputAsArray)("path");
             try {
-                const mc = (0, utils_1.newMinio)({
-                    // Inputs are re-evaluted before the post action, so we want the original keys & tokens
-                    accessKey: core.getState(state_1.State.AccessKey),
-                    secretKey: core.getState(state_1.State.SecretKey),
-                    sessionToken: core.getState(state_1.State.SessionToken)
-                });
+                const mc = (0, utils_1.newMinio)();
                 const compressionMethod = yield utils.getCompressionMethod();
                 const cachePaths = yield utils.resolvePaths(paths);
                 core.debug("Cache Paths:");
