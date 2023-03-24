@@ -112932,6 +112932,7 @@ const cache = __importStar(__nccwpck_require__(7799));
 const utils = __importStar(__nccwpck_require__(1518));
 const tar_1 = __nccwpck_require__(6490);
 const core = __importStar(__nccwpck_require__(2186));
+const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 const state_1 = __nccwpck_require__(9738);
 const utils_1 = __nccwpck_require__(1314);
@@ -112964,6 +112965,13 @@ function saveCache() {
                     yield (0, tar_1.listTar)(archivePath, compressionMethod);
                 }
                 const object = path.join(core.getInput("bucket_sub_folder"), key, cacheFileName);
+                fs.stat(archivePath, (err, stats) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    console.info(`File to upload size: ${(0, utils_1.formatSize)(stats.size)} (${stats.size} bytes)`);
+                });
                 core.info(`Uploading tar to s3. Bucket: ${bucket}, Object: ${object}`);
                 yield mc.fPutObject(bucket, object, archivePath, {});
                 core.info("Cache saved to s3 successfully");

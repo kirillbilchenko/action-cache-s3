@@ -2,10 +2,12 @@ import * as cache from "@actions/cache";
 import * as utils from "@actions/cache/lib/internal/cacheUtils";
 import { createTar, listTar } from "@actions/cache/lib/internal/tar";
 import * as core from "@actions/core";
+import * as fs from "fs";
 import * as path from "path";
 
 import { State } from "./state";
 import {
+    formatSize,
     getInputAsArray,
     getInputAsBoolean,
     isExactKeyMatch,
@@ -54,6 +56,18 @@ async function saveCache() {
                 key,
                 cacheFileName
             );
+
+            fs.stat(archivePath, (err, stats) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.info(
+                    `File to upload size: ${formatSize(stats.size)} (${
+                        stats.size
+                    } bytes)`
+                );
+            });
 
             core.info(
                 `Uploading tar to s3. Bucket: ${bucket}, Object: ${object}`
