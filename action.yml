@@ -2,13 +2,20 @@ name: "s3 cache"
 author: tespkg
 description: "S3 actions cache with actions/cache@v2 passthrough"
 inputs:
+  role-to-assume:
+    description: AWS role to assume
+    required: true
+  aws-region:
+    description: "AWS Region, e.g. us-east-2"
+    required: true
+    default: "us-east-1"
+  role-session-name:
+    description: "Role session name (default: GitHubActions)"
+    required: false
   endpoint:
     description: "s3 / minio endpoint, see: https://docs.min.io/docs/javascript-client-api-reference.html"
     required: false
     default: s3.amazonaws.com
-  region:
-    description: "AWS region"
-    required: false
   port:
     description: minio port
     required: false
@@ -44,11 +51,18 @@ inputs:
     description: "Bucket sub folder used to save/resotre cache"
     required: false
     default: ""
+  requrie_aws_login:
+    description: "Perform aws login before starting action"
+    required: false
+    default: "false"
+
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the primary key"
 runs:
   using: node16
+  pre: "dist/aws/index.js"
+  pre-if: ${{ inputs.requrie_aws_login == 'true' }}
   main: "dist/restore/index.js"
   post: "dist/save/index.js"
   post-if: "success()"
