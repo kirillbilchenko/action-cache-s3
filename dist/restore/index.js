@@ -113085,10 +113085,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isExactKeyMatch = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = void 0;
 const utils = __importStar(__nccwpck_require__(1518));
 const core = __importStar(__nccwpck_require__(2186));
+const assert_1 = __importDefault(__nccwpck_require__(9491));
 const minio = __importStar(__nccwpck_require__(8308));
 const state_1 = __nccwpck_require__(9738);
 function isGhes() {
@@ -113096,15 +113100,27 @@ function isGhes() {
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
 exports.isGhes = isGhes;
+const isDefined = (i) => !!i;
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_DEFAULT_REGION, AWS_REGION } = process.env;
+if (getInputAsBoolean("requrie_aws_login")) {
+    (0, assert_1.default)([
+        AWS_ACCESS_KEY_ID,
+        AWS_SECRET_ACCESS_KEY,
+        AWS_SESSION_TOKEN,
+        AWS_DEFAULT_REGION,
+        AWS_REGION
+    ].every(isDefined), "Missing required environment value. Are you perform aws login?");
+}
 function newMinio({ accessKey, secretKey, sessionToken } = {}) {
+    var _a, _b, _c, _d;
     return new minio.Client({
         endPoint: core.getInput("endpoint"),
         port: getInputAsInt("port"),
         useSSL: !getInputAsBoolean("insecure"),
-        accessKey: accessKey !== null && accessKey !== void 0 ? accessKey : core.getInput("accessKey"),
-        secretKey: secretKey !== null && secretKey !== void 0 ? secretKey : core.getInput("secretKey"),
-        sessionToken: sessionToken !== null && sessionToken !== void 0 ? sessionToken : core.getInput("sessionToken"),
-        region: core.getInput("region")
+        accessKey: (_a = accessKey !== null && accessKey !== void 0 ? accessKey : AWS_ACCESS_KEY_ID) !== null && _a !== void 0 ? _a : core.getInput("accessKey"),
+        secretKey: (_b = secretKey !== null && secretKey !== void 0 ? secretKey : AWS_SECRET_ACCESS_KEY) !== null && _b !== void 0 ? _b : core.getInput("secretKey"),
+        sessionToken: (_c = sessionToken !== null && sessionToken !== void 0 ? sessionToken : AWS_SESSION_TOKEN) !== null && _c !== void 0 ? _c : core.getInput("sessionToken"),
+        region: (_d = AWS_REGION !== null && AWS_REGION !== void 0 ? AWS_REGION : core.getInput("aws-region")) !== null && _d !== void 0 ? _d : core.getInput("region")
     });
 }
 exports.newMinio = newMinio;

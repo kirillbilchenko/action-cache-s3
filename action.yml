@@ -62,7 +62,7 @@ outputs:
 runs:
   using: node16
   pre: "dist/aws/index.js"
-  pre-if: ${{ inputs.requrie_aws_login == 'true' }}
+  pre-if: inputs.requrie_aws_login == 'true'
   main: "dist/restore/index.js"
   post: "dist/save/index.js"
   post-if: "success()"

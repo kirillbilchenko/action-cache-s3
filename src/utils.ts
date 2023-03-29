@@ -1,8 +1,8 @@
 import * as utils from "@actions/cache/lib/internal/cacheUtils";
 import { CompressionMethod } from "@actions/cache/lib/internal/constants";
 import * as core from "@actions/core";
-import * as minio from "minio";
 import assert from "assert";
+import * as minio from "minio";
 
 import { State } from "./state";
 
@@ -13,8 +13,7 @@ export function isGhes(): boolean {
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
 
-const isDefined = (i: any) => !!i;
-
+const isDefined = (i: unknown) => !!i;
 const {
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
@@ -22,16 +21,19 @@ const {
     AWS_DEFAULT_REGION,
     AWS_REGION
 } = process.env;
-assert(
-    [
-        AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY,
-        AWS_SESSION_TOKEN,
-        AWS_DEFAULT_REGION,
-        AWS_REGION
-    ].every(isDefined),
-    "Missing required environment value. Are you perform aws login?"
-);
+
+if (getInputAsBoolean("requrie_aws_login")) {
+    assert(
+        [
+            AWS_ACCESS_KEY_ID,
+            AWS_SECRET_ACCESS_KEY,
+            AWS_SESSION_TOKEN,
+            AWS_DEFAULT_REGION,
+            AWS_REGION
+        ].every(isDefined),
+        "Missing required environment value. Are you perform aws login?"
+    );
+}
 
 export function newMinio({
     accessKey,
