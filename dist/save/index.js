@@ -112991,6 +112991,7 @@ function saveCache() {
                 else {
                     core.debug("skipped fallback cache");
                 }
+                core.setFailed(e.message);
             }
         }
         catch (e) {

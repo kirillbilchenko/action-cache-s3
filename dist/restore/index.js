@@ -112951,12 +112951,13 @@ function restoreCache() {
                 core.saveState(state_1.State.SecretKey, core.getInput("secretKey"));
                 core.saveState(state_1.State.SessionToken, core.getInput("sessionToken"));
                 const mc = (0, utils_1.newMinio)();
+                const subfolder = core.getInput("bucket_sub_folder");
                 const compressionMethod = yield utils.getCompressionMethod();
                 const cacheFileName = utils.getCacheFileName(compressionMethod);
                 const archivePath = path.join(yield utils.createTempDirectory(), cacheFileName);
-                const efectiveKey = path.join(core.getInput("bucket_sub_folder"), key);
+                const efectiveKey = path.join(subfolder, key);
                 const effectiveRestoreKey = restoreKeys.map(element => {
-                    return path.join(core.getInput("bucket_sub_folder"), element);
+                    return path.join(subfolder, element);
                 });
                 core.info("Cache path in the bucket: " + efectiveKey);
                 effectiveRestoreKey.forEach(element => {

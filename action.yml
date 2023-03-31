@@ -44,6 +44,10 @@ inputs:
     description: "Bucket sub folder used to save/resotre cache"
     required: false
     default: ""
+  requrie_aws_login:
+    description: "Reuqire to use aws environemnt variables to perform calls"
+    requred: false
+    default: false
   
 outputs:
   cache-hit:

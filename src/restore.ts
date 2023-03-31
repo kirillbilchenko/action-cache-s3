@@ -35,19 +35,16 @@ async function restoreCache() {
             core.saveState(State.SessionToken, core.getInput("sessionToken"));
 
             const mc = newMinio();
-
+            const subfolder = core.getInput("bucket_sub_folder");
             const compressionMethod = await utils.getCompressionMethod();
             const cacheFileName = utils.getCacheFileName(compressionMethod);
             const archivePath = path.join(
                 await utils.createTempDirectory(),
                 cacheFileName
             );
-            const efectiveKey = path.join(
-                core.getInput("bucket_sub_folder"),
-                key
-            );
+            const efectiveKey = path.join(subfolder, key);
             const effectiveRestoreKey = restoreKeys.map(element => {
-                return path.join(core.getInput("bucket_sub_folder"), element);
+                return path.join(subfolder, element);
             });
 
             core.info("Cache path in the bucket: " + efectiveKey);
