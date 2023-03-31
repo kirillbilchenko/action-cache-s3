@@ -89,6 +89,7 @@ async function saveCache() {
             } else {
                 core.debug("skipped fallback cache");
             }
+            core.setFailed((e as Error).message);
         }
     } catch (e) {
         core.info("warning: " + (e as Error).message);

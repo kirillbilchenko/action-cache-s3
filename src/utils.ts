@@ -1,6 +1,7 @@
 import * as utils from "@actions/cache/lib/internal/cacheUtils";
 import { CompressionMethod } from "@actions/cache/lib/internal/constants";
 import * as core from "@actions/core";
+import assert from "assert";
 import * as minio from "minio";
 
 import { State } from "./state";
@@ -10,6 +11,28 @@ export function isGhes(): boolean {
         process.env["GITHUB_SERVER_URL"] || "https://github.com"
     );
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
+}
+
+const isDefined = (i: unknown) => !!i;
+const {
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_SESSION_TOKEN,
+    AWS_DEFAULT_REGION,
+    AWS_REGION
+} = process.env;
+
+if (getInputAsBoolean("requrie_aws_login")) {
+    assert(
+        [
+            AWS_ACCESS_KEY_ID,
+            AWS_SECRET_ACCESS_KEY,
+            AWS_SESSION_TOKEN,
+            AWS_DEFAULT_REGION,
+            AWS_REGION
+        ].every(isDefined),
+        "Missing required environment value. Are you perform aws login?"
+    );
 }
 
 export function newMinio({
@@ -25,10 +48,13 @@ export function newMinio({
         endPoint: core.getInput("endpoint"),
         port: getInputAsInt("port"),
         useSSL: !getInputAsBoolean("insecure"),
-        accessKey: accessKey ?? core.getInput("accessKey"),
-        secretKey: secretKey ?? core.getInput("secretKey"),
-        sessionToken: sessionToken ?? core.getInput("sessionToken"),
-        region: core.getInput("region")
+        accessKey: accessKey ?? AWS_ACCESS_KEY_ID ?? core.getInput("accessKey"),
+        secretKey:
+            secretKey ?? AWS_SECRET_ACCESS_KEY ?? core.getInput("secretKey"),
+        sessionToken:
+            sessionToken ?? AWS_SESSION_TOKEN ?? core.getInput("sessionToken"),
+        region:
+            AWS_REGION ?? core.getInput("aws-region") ?? core.getInput("region")
     });
 }
 

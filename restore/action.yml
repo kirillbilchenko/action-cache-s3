@@ -41,18 +41,17 @@ inputs:
     required: false
     default: "true"
   bucket_sub_folder:
-    description: "Bucket sub folder used to save/resotre cache"
+    description: "Bucket sub folder used to save/restore cache"
     required: false
     default: ""
 
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the primary key"
+    
 runs:
   using: node16
-  main: "restore/index.js"
-  post: "save/index.js"
-  post-if: "success()"
+  main: "index.js"
 branding:
   icon: "archive"
   color: "gray-dark"
