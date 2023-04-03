@@ -65,10 +65,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Generate files in working directory
         shell: bash
-        run: src/create-cache-files.sh ${{ runner.os }} test-cache
+        run: __tests__/create-cache-files.sh ${{ runner.os }} test-cache
       - name: Generate files outside working directory
         shell: bash
-        run: src/create-cache-files.sh ${{ runner.os }} ~/test-cache
+        run: __tests__/create-cache-files.sh ${{ runner.os }} ~/test-cache
       - name: Save cache
         uses: ./
         with:
@@ -106,10 +106,10 @@ jobs:
             ~/test-cache
       - name: Verify cache files in working directory
         shell: bash
-        run: src/verify-cache-files.sh ${{ runner.os }} test-cache
+        run: __tests__/verify-cache-files.sh ${{ runner.os }} test-cache
       - name: Verify cache files outside working directory
         shell: bash
-        run: src/verify-cache-files.sh ${{ runner.os }} ~/test-cache
+        run: __tests__/verify-cache-files.sh ${{ runner.os }} ~/test-cache
 
   test-restore-keys:
     needs: test-save
@@ -136,7 +136,7 @@ jobs:
           restore-keys: test-${{ runner.os }}-
       - name: Verify cache files in working directory
         shell: bash
-        run: src/verify-cache-files.sh ${{ runner.os }} test-cache
+        run: __tests__/verify-cache-files.sh ${{ runner.os }} test-cache
       - name: Verify cache files outside working directory
         shell: bash
-        run: src/verify-cache-files.sh ${{ runner.os }} ~/test-cache
+        run: __tests__/verify-cache-files.sh ${{ runner.os }} ~/test-cache

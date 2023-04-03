@@ -13,7 +13,7 @@ import {
     isExactKeyMatch,
     isGhes,
     newMinio
-} from "./utils";
+} from "./utils/utils";
 
 process.on("uncaughtException", e => core.info("warning: " + e.message));
 

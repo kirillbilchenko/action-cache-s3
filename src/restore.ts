@@ -15,7 +15,7 @@ import {
     newMinio,
     saveMatchedKey,
     setCacheHitOutput
-} from "./utils";
+} from "./utils/utils";
 
 process.on("uncaughtException", e => core.info("warning: " + e.message));
 

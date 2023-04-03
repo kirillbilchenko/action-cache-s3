@@ -4,7 +4,7 @@ import * as core from "@actions/core";
 import assert from "assert";
 import * as minio from "minio";
 
-import { State } from "./state";
+import { State } from "../state";
 
 export function isGhes(): boolean {
     const ghUrl = new URL(
@@ -70,10 +70,10 @@ export function getInputAsArray(
     options?: core.InputOptions
 ): string[] {
     return core
-        .getInput(name, options)
-        .split("\n")
-        .map(s => s.trim())
-        .filter(x => x !== "");
+    .getInput(name, options)
+    .split("\n")
+    .map(s => s.replace(/^!\s+/, "!").trim())
+    .filter(x => x !== "");
 }
 
 export function getInputAsInt(
@@ -180,6 +180,11 @@ export function saveMatchedKey(matchedKey: string) {
     return core.saveState(State.MatchedKey, matchedKey);
 }
 
+export function logWarning(message: string): void {
+    const warningPrefix = "[warning]";
+    core.info(`${warningPrefix}${message}`);
+}
+
 function getMatchedKey() {
     return core.getState(State.MatchedKey);
 }
@@ -189,7 +194,13 @@ export function isExactKeyMatch(): boolean {
     const inputKey =
         core.getState(State.PrimaryKey) ||
         core.getInput("key", { required: true });
-    const result = getMatchedKey() === inputKey;
+    const result=
+    !!(
+        matchedKey &&
+        matchedKey.localeCompare(inputKey, undefined, {
+            sensitivity: "accent"
+        }) === 0
+    );
     core.debug(
         `isExactKeyMatch: matchedKey=${matchedKey} inputKey=${inputKey}, result=${result}`
     );
