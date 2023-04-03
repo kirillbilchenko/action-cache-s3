@@ -1,7 +1,7 @@
 import { getCompressionMethod } from "@actions/cache/lib/internal/cacheUtils";
 import * as minio from "minio";
 
-import { findObject } from "./utils/utils";
+import { findObject } from "./utils";
 
 describe("utils", () => {
     test("getLatestObj", async () => {

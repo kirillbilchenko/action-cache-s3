@@ -34,6 +34,13 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install Deps
         run: yarn install --pure-lockfile
+
+      - name: Prettier Format Check
+        run: yarn format-check
+      - name: ESLint Check
+        run: yarn lint
+      - name: Build & Test
+        run: yarn test
       # - name: Build & Test
       #   run: yarn test
       - name: Ensure dist/ folder is up-to-date
