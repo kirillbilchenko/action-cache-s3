@@ -112934,7 +112934,7 @@ const tar_1 = __nccwpck_require__(6490);
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(1017));
 const state_1 = __nccwpck_require__(9738);
-const utils_1 = __nccwpck_require__(1314);
+const utils_1 = __nccwpck_require__(239);
 process.on("uncaughtException", e => core.info("warning: " + e.message));
 function restoreCache() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -113049,7 +113049,7 @@ var State;
 
 /***/ }),
 
-/***/ 1314:
+/***/ 239:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -113090,7 +113090,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isExactKeyMatch = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = void 0;
+exports.isExactKeyMatch = exports.logWarning = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = void 0;
 const utils = __importStar(__nccwpck_require__(1518));
 const core = __importStar(__nccwpck_require__(2186));
 const assert_1 = __importDefault(__nccwpck_require__(9491));
@@ -113133,7 +113133,7 @@ function getInputAsArray(name, options) {
     return core
         .getInput(name, options)
         .split("\n")
-        .map(s => s.trim())
+        .map(s => s.replace(/^!\s+/, "!").trim())
         .filter(x => x !== "");
 }
 exports.getInputAsArray = getInputAsArray;
@@ -113218,6 +113218,11 @@ function saveMatchedKey(matchedKey) {
     return core.saveState(state_1.State.MatchedKey, matchedKey);
 }
 exports.saveMatchedKey = saveMatchedKey;
+function logWarning(message) {
+    const warningPrefix = "[warning]";
+    core.info(`${warningPrefix}${message}`);
+}
+exports.logWarning = logWarning;
 function getMatchedKey() {
     return core.getState(state_1.State.MatchedKey);
 }
@@ -113225,7 +113230,10 @@ function isExactKeyMatch() {
     const matchedKey = getMatchedKey();
     const inputKey = core.getState(state_1.State.PrimaryKey) ||
         core.getInput("key", { required: true });
-    const result = getMatchedKey() === inputKey;
+    const result = !!(matchedKey &&
+        matchedKey.localeCompare(inputKey, undefined, {
+            sensitivity: "accent"
+        }) === 0);
     core.debug(`isExactKeyMatch: matchedKey=${matchedKey} inputKey=${inputKey}, result=${result}`);
     return result;
 }
