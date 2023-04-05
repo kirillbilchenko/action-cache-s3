@@ -8,14 +8,14 @@ jest.mock("minio");
 const myBucketItems: BucketItem[] = [
     {
         name: "test-Linux-4604445832-a3ad8045f14cd7127d9e2a4e973040a6db853bf2/cache.tzst",
-        lastModified: new Date("2023-04-04T05:54:13.700Z"),
+        lastModified: new Date(Date.parse("2023-04-04T05:54:13.700Z")),
         prefix: "",
         etag: "2c52510a62a9628fff959f4e2abdc58e",
         size: 375
     },
     {
         name: "test-Linux-4604445832/cache.tzst",
-        lastModified: new Date("2023-04-04T05:53:29.822Z"),
+        lastModified: new Date(Date.parse("2023-04-04T05:53:29.822Z")),
         prefix: "",
         etag: "5e7e3837cc4ea5636be29074b9fbd57a",
         size: 383
@@ -48,6 +48,6 @@ describe("utils", () => {
             await getCompressionMethod()
         );
         expect(got).toBeTruthy();
-        console.log(got);
+        expect(got.item).toEqual(myBucketItems[0]);
     });
 });
