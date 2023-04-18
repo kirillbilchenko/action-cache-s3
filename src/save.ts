@@ -5,6 +5,7 @@ import * as core from "@actions/core";
 import * as fs from "fs";
 import * as path from "path";
 
+import { Events } from "../src/constants";
 import { State } from "./state";
 import {
     formatSize,
@@ -12,6 +13,8 @@ import {
     getInputAsBoolean,
     isExactKeyMatch,
     isGhes,
+    isValidEvent,
+    logWarning,
     newMinio
 } from "./utils/utils";
 
@@ -19,6 +22,15 @@ process.on("uncaughtException", e => core.info("warning: " + e.message));
 
 async function saveCache() {
     try {
+        if (!isValidEvent()) {
+            logWarning(
+                `Event Validation Error: The event type ${
+                    process.env[Events.Key]
+                } is not supported because it's not tied to a branch or tag ref.`
+            );
+            return;
+        }
+
         if (isExactKeyMatch()) {
             core.info("Cache was exact key match, not saving");
             return;

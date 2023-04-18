@@ -18,15 +18,3 @@ interface CacheInput {
     lookupOnly?: boolean;
 }
 
-export function setInputs(input: CacheInput): void {
-    setInput(Inputs.Path, input.path);
-    setInput(Inputs.Key, input.key);
-    input.restoreKeys &&
-        setInput(Inputs.RestoreKeys, input.restoreKeys.join("\n"));
-}
-
-export function clearInputs(): void {
-    delete process.env[getInputName(Inputs.Path)];
-    delete process.env[getInputName(Inputs.Key)];
-    delete process.env[getInputName(Inputs.RestoreKeys)];
-}

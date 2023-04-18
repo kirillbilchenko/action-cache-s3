@@ -5,6 +5,7 @@ import * as core from "@actions/core";
 import * as minio from "minio";
 import * as path from "path";
 
+import { Events } from "../src/constants";
 import { State } from "./state";
 import {
     findObject,
@@ -12,6 +13,8 @@ import {
     getInputAsArray,
     getInputAsBoolean,
     isGhes,
+    isValidEvent,
+    logWarning,
     newMinio,
     saveMatchedKey,
     setCacheHitOutput
@@ -21,6 +24,16 @@ process.on("uncaughtException", e => core.info("warning: " + e.message));
 
 async function restoreCache() {
     try {
+        // Validate inputs, this can cause task failure
+        if (!isValidEvent()) {
+            logWarning(
+                `Event Validation Error: The event type ${
+                    process.env[Events.Key]
+                } is not supported because it's not tied to a branch or tag ref.`
+            );
+            return;
+        }
+
         const bucket = core.getInput("bucket", { required: true });
         const key = core.getInput("key", { required: true });
         const useFallback = getInputAsBoolean("use-fallback");
