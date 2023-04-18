@@ -7,16 +7,16 @@ import * as path from "path";
 
 import { State } from "./state";
 import {
+    Events,
     findObject,
     formatSize,
     getInputAsArray,
     getInputAsBoolean,
     isGhes,
-    newMinio,
-    saveMatchedKey,
     isValidEvent,
     logWarning,
-    Events,
+    newMinio,
+    saveMatchedKey,
     setCacheHitOutput
 } from "./utils/utils";
 
