@@ -6,6 +6,14 @@ import * as minio from "minio";
 
 import { State } from "../state";
 
+export const RefKey = "GITHUB_REF";
+
+export enum Events {
+    Key = "GITHUB_EVENT_NAME",
+    Push = "push",
+    PullRequest = "pull_request"
+}
+
 export function isGhes(): boolean {
     const ghUrl = new URL(
         process.env["GITHUB_SERVER_URL"] || "https://github.com"
@@ -187,6 +195,12 @@ export function logWarning(message: string): void {
 
 function getMatchedKey() {
     return core.getState(State.MatchedKey);
+}
+
+// Cache token authorized for all events that are tied to a ref
+// See GitHub Context https://help.github.com/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions#github-context
+export function isValidEvent(): boolean {
+    return RefKey in process.env && Boolean(process.env[RefKey]);
 }
 
 export function isExactKeyMatch(): boolean {

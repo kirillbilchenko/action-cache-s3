@@ -117,24 +117,24 @@ test("logWarning logs a message with a warning prefix", () => {
     expect(infoMock).toHaveBeenCalledWith(`[warning]${message}`);
 });
 
-// test("isValidEvent returns false for event that does not have a branch or tag", () => {
-//     const event = "foo";
-//     process.env[Events.Key] = event;
+test("isValidEvent returns false for event that does not have a branch or tag", () => {
+    const event = "foo";
+    process.env[Events.Key] = event;
 
-//     const isValidEvent = actionUtils.isValidEvent();
+    const isValidEvent = actionUtils.isValidEvent();
 
-//     expect(isValidEvent).toBe(false);
-// });
+    expect(isValidEvent).toBe(false);
+});
 
-// test("isValidEvent returns true for event that has a ref", () => {
-//     const event = Events.Push;
-//     process.env[Events.Key] = event;
-//     process.env[RefKey] = "ref/heads/feature";
+test("isValidEvent returns true for event that has a ref", () => {
+    const event = Events.Push;
+    process.env[Events.Key] = event;
+    process.env[RefKey] = "ref/heads/feature";
 
-//     const isValidEvent = actionUtils.isValidEvent();
+    const isValidEvent = actionUtils.isValidEvent();
 
-//     expect(isValidEvent).toBe(true);
-// });
+    expect(isValidEvent).toBe(true);
+});
 
 test("getInputAsArray returns empty array if not required and missing", () => {
     expect(actionUtils.getInputAsArray("foo")).toEqual([]);

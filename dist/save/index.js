@@ -112940,6 +112940,10 @@ process.on("uncaughtException", e => core.info("warning: " + e.message));
 function saveCache() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            if (!(0, utils_1.isValidEvent)()) {
+                (0, utils_1.logWarning)(`Event Validation Error: The event type ${process.env[utils_1.Events.Key]} is not supported because it's not tied to a branch or tag ref.`);
+                return;
+            }
             if ((0, utils_1.isExactKeyMatch)()) {
                 core.info("Cache was exact key match, not saving");
                 return;
@@ -113064,12 +113068,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isExactKeyMatch = exports.logWarning = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = void 0;
+exports.isExactKeyMatch = exports.isValidEvent = exports.logWarning = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = exports.Events = exports.RefKey = void 0;
 const utils = __importStar(__nccwpck_require__(1518));
 const core = __importStar(__nccwpck_require__(2186));
 const assert_1 = __importDefault(__nccwpck_require__(9491));
 const minio = __importStar(__nccwpck_require__(8308));
 const state_1 = __nccwpck_require__(9738);
+exports.RefKey = "GITHUB_REF";
+var Events;
+(function (Events) {
+    Events["Key"] = "GITHUB_EVENT_NAME";
+    Events["Push"] = "push";
+    Events["PullRequest"] = "pull_request";
+})(Events = exports.Events || (exports.Events = {}));
 function isGhes() {
     const ghUrl = new URL(process.env["GITHUB_SERVER_URL"] || "https://github.com");
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
@@ -113200,6 +113211,12 @@ exports.logWarning = logWarning;
 function getMatchedKey() {
     return core.getState(state_1.State.MatchedKey);
 }
+// Cache token authorized for all events that are tied to a ref
+// See GitHub Context https://help.github.com/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions#github-context
+function isValidEvent() {
+    return exports.RefKey in process.env && Boolean(process.env[exports.RefKey]);
+}
+exports.isValidEvent = isValidEvent;
 function isExactKeyMatch() {
     const matchedKey = getMatchedKey();
     const inputKey = core.getState(state_1.State.PrimaryKey) ||
