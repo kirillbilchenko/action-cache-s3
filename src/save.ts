@@ -5,9 +5,9 @@ import * as core from "@actions/core";
 import * as fs from "fs";
 import * as path from "path";
 
+import { Events } from "../src/constants";
 import { State } from "./state";
 import {
-    Events,
     formatSize,
     getInputAsArray,
     getInputAsBoolean,

@@ -112890,6 +112890,34 @@ module.exports.element = module.exports.Element = element;
 
 /***/ }),
 
+/***/ 9042:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RefKey = exports.Events = exports.Inputs = void 0;
+var Inputs;
+(function (Inputs) {
+    Inputs["Key"] = "key";
+    Inputs["Path"] = "path";
+    Inputs["RestoreKeys"] = "restore-keys"; // Input for cache, restore action
+    // UploadChunkSize = "upload-chunk-size", // Input for cache, save action
+    // EnableCrossOsArchive = "enableCrossOsArchive", // Input for cache, restore, save action
+    // FailOnCacheMiss = "fail-on-cache-miss", // Input for cache, restore action
+    // LookupOnly = "lookup-only" // Input for cache, restore action
+})(Inputs = exports.Inputs || (exports.Inputs = {}));
+var Events;
+(function (Events) {
+    Events["Key"] = "GITHUB_EVENT_NAME";
+    Events["Push"] = "push";
+    Events["PullRequest"] = "pull_request";
+})(Events = exports.Events || (exports.Events = {}));
+exports.RefKey = "GITHUB_REF";
+
+
+/***/ }),
+
 /***/ 4095:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -112933,6 +112961,7 @@ const utils = __importStar(__nccwpck_require__(1518));
 const tar_1 = __nccwpck_require__(6490);
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(1017));
+const constants_1 = __nccwpck_require__(9042);
 const state_1 = __nccwpck_require__(9738);
 const utils_1 = __nccwpck_require__(239);
 process.on("uncaughtException", e => core.info("warning: " + e.message));
@@ -112941,7 +112970,7 @@ function restoreCache() {
         try {
             // Validate inputs, this can cause task failure
             if (!(0, utils_1.isValidEvent)()) {
-                (0, utils_1.logWarning)(`Event Validation Error: The event type ${process.env[utils_1.Events.Key]} is not supported because it's not tied to a branch or tag ref.`);
+                (0, utils_1.logWarning)(`Event Validation Error: The event type ${process.env[constants_1.Events.Key]} is not supported because it's not tied to a branch or tag ref.`);
                 return;
             }
             const bucket = core.getInput("bucket", { required: true });
@@ -113095,19 +113124,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isExactKeyMatch = exports.isValidEvent = exports.logWarning = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = exports.Events = exports.RefKey = void 0;
+exports.isExactKeyMatch = exports.isValidEvent = exports.logWarning = exports.saveMatchedKey = exports.listObjects = exports.findObject = exports.setCacheHitOutput = exports.formatSize = exports.getInputAsInt = exports.getInputAsArray = exports.getInputAsBoolean = exports.newMinio = exports.isGhes = void 0;
 const utils = __importStar(__nccwpck_require__(1518));
 const core = __importStar(__nccwpck_require__(2186));
 const assert_1 = __importDefault(__nccwpck_require__(9491));
 const minio = __importStar(__nccwpck_require__(8308));
 const state_1 = __nccwpck_require__(9738);
-exports.RefKey = "GITHUB_REF";
-var Events;
-(function (Events) {
-    Events["Key"] = "GITHUB_EVENT_NAME";
-    Events["Push"] = "push";
-    Events["PullRequest"] = "pull_request";
-})(Events = exports.Events || (exports.Events = {}));
+const constants_1 = __nccwpck_require__(9042);
 function isGhes() {
     const ghUrl = new URL(process.env["GITHUB_SERVER_URL"] || "https://github.com");
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
@@ -113241,7 +113264,7 @@ function getMatchedKey() {
 // Cache token authorized for all events that are tied to a ref
 // See GitHub Context https://help.github.com/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions#github-context
 function isValidEvent() {
-    return exports.RefKey in process.env && Boolean(process.env[exports.RefKey]);
+    return constants_1.RefKey in process.env && Boolean(process.env[constants_1.RefKey]);
 }
 exports.isValidEvent = isValidEvent;
 function isExactKeyMatch() {

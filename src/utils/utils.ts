@@ -5,14 +5,7 @@ import assert from "assert";
 import * as minio from "minio";
 
 import { State } from "../state";
-
-export const RefKey = "GITHUB_REF";
-
-export enum Events {
-    Key = "GITHUB_EVENT_NAME",
-    Push = "push",
-    PullRequest = "pull_request"
-}
+import { RefKey } from "../constants";
 
 export function isGhes(): boolean {
     const ghUrl = new URL(
