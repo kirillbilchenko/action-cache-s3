@@ -24,8 +24,8 @@ process.on("uncaughtException", e => core.info("warning: " + e.message));
 
 async function restoreCache() {
     try {
-         // Validate inputs, this can cause task failure
-         if (!isValidEvent()) {
+        // Validate inputs, this can cause task failure
+        if (!isValidEvent()) {
             logWarning(
                 `Event Validation Error: The event type ${
                     process.env[Events.Key]
