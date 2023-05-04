@@ -50,16 +50,8 @@ jobs:
             exit 1
           fi
 
-  create-minio-bucket:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          wget -q https://dl.min.io/client/mc/release/linux-amd64/mc
-          chmod a+x mc
-          ./mc mb play/actions-cache || exit 0
 
   test-save:
-    needs: create-minio-bucket
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
